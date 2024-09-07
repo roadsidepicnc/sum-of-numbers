@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-namespace ObjectPool
+namespace ObjectPoolManagement
 {
     public abstract class PoolObject : MonoBehaviour, IPoolable<PoolObject>
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GridManagement;
-using ObjectPool;
+using ObjectPoolManagement;
 using Zenject;
 
 namespace Gameplay

@@ -1,8 +1,9 @@
 using Gameplay;
 using GridManagement;
-using ObjectPool;
+using ObjectPoolManagement;
 using UnityEngine;
 using Zenject;
+using CustomObjectPool = ObjectPoolManagement.ObjectPool;
 
 public class MainObjectPoolInstaller : MonoInstaller<MainObjectPoolInstaller>
 {
@@ -18,5 +19,7 @@ public class MainObjectPoolInstaller : MonoInstaller<MainObjectPoolInstaller>
         Container.Bind<GridCreator>().AsSingle().NonLazy();
         
         Container.Bind<GameManager>().FromInstance(gameManager).AsSingle();
+        
+        Container.BindFactory<CustomObjectPool, CustomObjectPool.Factory>();
     }
 }

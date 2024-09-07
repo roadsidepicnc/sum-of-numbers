@@ -3,7 +3,7 @@ using Gameplay;
 using UnityEngine;
 using Zenject;
 
-namespace ObjectPool
+namespace ObjectPoolManagement
 {
     public class ObjectPoolManager : BaseManager
     {
@@ -13,12 +13,12 @@ namespace ObjectPool
 
         private readonly Dictionary<PoolObjectType, ObjectPool> _poolTypeTpPoolItemDictionary = new();
 
-        private DiContainer _diContainer;
+        private ObjectPool.Factory _objectPoolFactory;
 
         [Inject]
-        public void InstallDependencies(DiContainer diContainer)
+        public void InstallDependencies(ObjectPool.Factory objectPoolFactory)
         {
-            _diContainer = diContainer;
+            _objectPoolFactory = objectPoolFactory;
         }
 
         public override void Initialize()
@@ -31,8 +31,8 @@ namespace ObjectPool
         {
             foreach (var poolObject in poolItemPrefabs)
             {
-                var objectPool =
-                    new ObjectPool(poolObject, initialObjectCount, _diContainer).Initialize(pooledObjectsParent);
+                var objectPool = _objectPoolFactory.Create(); 
+                objectPool.Initialize(pooledObjectsParent, poolObject, initialObjectCount);
                 _poolTypeTpPoolItemDictionary.Add(poolObject.poolObjectType, objectPool);
             }
         }
@@ -56,7 +56,6 @@ namespace ObjectPool
             }
         }
 
-        public int GetActiveObjectCountOfPool(PoolObjectType poolObjectType) =>
-            _poolTypeTpPoolItemDictionary[poolObjectType].ActiveObjectCount;
+        public int GetActiveObjectCountOfPool(PoolObjectType poolObjectType) => _poolTypeTpPoolItemDictionary[poolObjectType].ActiveObjectCount;
     }
 }

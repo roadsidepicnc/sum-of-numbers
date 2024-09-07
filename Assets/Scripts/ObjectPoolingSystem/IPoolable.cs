@@ -1,7 +1,8 @@
 using System;
+using ObjectPoolManagement;
 using UnityEngine;
 
-namespace ObjectPool
+namespace ObjectPoolManagement
 {
     public interface IPoolable<T>
     {
