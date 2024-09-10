@@ -24,7 +24,7 @@ namespace Gameplay
 
         private void OnOkayButtonClick()
         {
-            Signals.GameStateChanged?.Invoke(GameState.Running, 0);
+            Signals.GameStateChanged?.Invoke(GameState.Running);
         }
 
         public void Reset()

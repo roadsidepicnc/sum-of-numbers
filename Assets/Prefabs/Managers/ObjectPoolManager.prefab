@@ -49,6 +49,8 @@ MonoBehaviour:
   pooledObjectsParent: {fileID: 2860980749316485157}
   poolItemPrefabs:
   - {fileID: 6931319175539155074, guid: 285e70b2f7f340c488b0eb594810beb5, type: 3}
+  - {fileID: 1850272440022553977, guid: 977f55ee1e7a3e346b1c475c63340de0, type: 3}
+  - {fileID: 2724838917516524352, guid: 52af5fd84b8b83e43b201e3670baa321, type: 3}
 --- !u!1 &7642829620564242631
 GameObject:
   m_ObjectHideFlags: 0

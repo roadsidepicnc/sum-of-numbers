@@ -10,8 +10,9 @@ namespace GridManagement
     {
         [SerializeField] private int rowCount;
         [SerializeField] private int columnCount;
-        [SerializeField] private GridLayoutGroup gridLayout;
-        [SerializeField] private Transform parent;
+        [SerializeField] private GridLayoutGroup cellsParent;
+        [SerializeField] private GridLayoutGroup rowLinesParent;
+        [SerializeField] private GridLayoutGroup columnLinesParent;
         
         [Inject] private GridCreator _gridCreator;
 
@@ -20,18 +21,21 @@ namespace GridManagement
         public override void Initialize()
         {
             base.Initialize();
-            _cellList = new();
-            
-            var horizontalCellSize = gridLayout.cellSize.x;
-            var verticalCellSize = gridLayout.cellSize.y;
 
-            if (horizontalCellSize != verticalCellSize)
+            var horizontalGridSize = cellsParent.GetComponent<RectTransform>().rect.width;
+            var verticalGridSize = cellsParent.GetComponent<RectTransform>().rect.height;
+            
+            if (horizontalGridSize != verticalGridSize || rowCount != columnCount)
             {
                 Debug.LogError("Grid cell size is not proper");
                 return;
             }
+
+            var cellSize = horizontalGridSize / rowCount; 
             
-            _gridCreator.Create(rowCount, columnCount, parent, horizontalCellSize, _cellList);
+            _cellList = new();
+            
+            _gridCreator.Create(rowCount, columnCount, cellsParent, cellSize, horizontalGridSize, _cellList, rowLinesParent, columnLinesParent);
             IsInitialized = true;
         }
 

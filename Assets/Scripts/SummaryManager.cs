@@ -22,7 +22,7 @@ namespace Gameplay
             Signals.GameStateChanged -= OnGameStateChanged;
         }
 
-        private void OnGameStateChanged(GameState gameState, int score)
+        private void OnGameStateChanged(GameState gameState)
         {
             if (gameState != GameState.Finished)
             {
@@ -30,7 +30,6 @@ namespace Gameplay
                 return;
             }
 
-            UpdateContent(score);
         }
 
         private void Reset() => summary.Reset();

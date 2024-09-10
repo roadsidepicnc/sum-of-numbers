@@ -55,6 +55,6 @@ public class UISummaryScreen : MonoBehaviour
         _onClose?.Invoke();
         _onClose = null;
         gameObject.SetActive(false);
-        Signals.GameStateChanged?.Invoke(GameState.Running, 0);
+        Signals.GameStateChanged?.Invoke(GameState.Running);
     }
 }

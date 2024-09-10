@@ -63,5 +63,7 @@ namespace ObjectPoolManagement
 
 public enum PoolObjectType
 {
-    Cell = 1
+    Cell = 1,
+    TargetScoreText = 2,
+    GridLine = 3
 }
