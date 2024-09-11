@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GridManagement;
 using LevelManagement;
@@ -7,12 +8,8 @@ using Zenject;
 
 namespace Gameplay
 {
-    public class GameplayManager : BaseManager
+    public class GameplayManager : Manager
     {
-        [SerializeField] private GameObject gameplayBoard;
-        
-        [SerializeField] private List<Cell> cellList;
-        
         private GridManager _gridManager;
         private LevelManager _levelManager;
         private GameManager _gameManager;
@@ -35,15 +32,17 @@ namespace Gameplay
             _rowTargetScores = new();
             _columnTargetScores = new();
             
-            for (var i = 0; i < _gridManager.RowCount; i++)
+            for (var i = 0; i < _levelManager.CurrentLevelRowCount; i++)
             {
                 _rowTargetScores.Add(_levelManager.GetRowTargetValue(i));
             }
             
-            for (var i = 0; i < _gridManager.RowCount; i++)
+            for (var i = 0; i < _levelManager.CurrentLevelColumnCount; i++)
             {
                 _columnTargetScores.Add(_levelManager.GetColumnTargetValue(i));
             }
+            
+            IsInitialized = true;
         }
         
         protected override void Register()
@@ -100,7 +99,7 @@ namespace Gameplay
 
         private bool CheckWin()
         {
-            for (var i = 0; i < _gridManager.RowCount; i++)
+            for (var i = 0; i < _levelManager.CurrentLevelRowCount; i++)
             {
                 if (!CheckIfRowIsCompleted(i))
                 {
@@ -108,7 +107,7 @@ namespace Gameplay
                 }
             }
             
-            for (var i = 0; i < _gridManager.ColumnCount; i++)
+            for (var i = 0; i < _levelManager.CurrentLevelColumnCount; i++)
             {
                 if (!CheckIfColumnIsCompleted(i))
                 {
@@ -125,8 +124,14 @@ namespace Gameplay
             {
                 return;
             }
-            
-            gameplayBoard.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (_gameManager.GameState != GameState.Finished && Input.GetKeyDown(KeyCode.A))
+            {
+                _gameManager.SetGameState(GameState.Finished);
+            }
         }
     }
 }

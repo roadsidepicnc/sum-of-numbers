@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Gameplay
 {
-    public abstract class BaseManager : MonoBehaviour
+    public abstract class Manager : MonoBehaviour
     {
         public bool IsInitialized { get; protected set; }
         

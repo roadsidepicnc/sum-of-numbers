@@ -7,6 +7,7 @@ namespace Utilities
     {
         public static Action <GameState> GameStateChanged;
         public static Action <Cell> CellInteracted;
+        public static Action ResetGrid;
     }
 }
 

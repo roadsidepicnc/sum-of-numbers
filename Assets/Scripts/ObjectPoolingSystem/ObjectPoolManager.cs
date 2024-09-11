@@ -5,7 +5,7 @@ using Zenject;
 
 namespace ObjectPoolManagement
 {
-    public class ObjectPoolManager : BaseManager
+    public class ObjectPoolManager : Manager
     {
         [SerializeField] private int initialObjectCount;
         [SerializeField] private Transform pooledObjectsParent;
@@ -24,6 +24,7 @@ namespace ObjectPoolManagement
         public override void Initialize()
         {
             CreatePools(initialObjectCount);
+            
             IsInitialized = true;
         }
 

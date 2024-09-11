@@ -8,24 +8,37 @@ using Zenject;
 
 namespace GridManagement
 {
-    public class GridCreator
+    public class GridCreator : MonoBehaviour
     {
-        private readonly ObjectPoolManager _objectPoolManager;
-        private readonly LevelManager _levelManager;
+        private ObjectPoolManager _objectPoolManager;
+        private LevelManager _levelManager;
 
-        private const float BoldLineThickness = 5f;
-        private const float ThinLineThickness = 2.5f;
+        [SerializeField] private float boldLineThickness;
+        [SerializeField] private float thinLineThickness;
+        [SerializeField] private GridLayoutGroup cellsParent;
+        [SerializeField] private GridLayoutGroup rowLinesParent;
+        [SerializeField] private GridLayoutGroup columnLinesParent;
 
         [Inject]
-        public GridCreator(ObjectPoolManager objectPoolManager, LevelManager levelManager)
+        private void InstallDependencies(ObjectPoolManager objectPoolManager, LevelManager levelManager)
         {
             _objectPoolManager = objectPoolManager;
             _levelManager = levelManager;
         }
         
-        public void Create(int rowCount, int columnCount, GridLayoutGroup cellsParent, float cellSize, float gridSize, List<Cell> cells, GridLayoutGroup rowLinesParent, GridLayoutGroup columnLinesParent)
+        public void Create(int rowCount, int columnCount, List<Cell> cells)
         {
-            PlaceLines(rowLinesParent, columnLinesParent, rowCount, columnCount, cellSize, gridSize);
+            var horizontalGridSize = cellsParent.GetComponent<RectTransform>().rect.width;
+            var verticalGridSize = cellsParent.GetComponent<RectTransform>().rect.height;
+            
+            if (horizontalGridSize != verticalGridSize || rowCount != columnCount)
+            {
+                Debug.LogError("Grid cell size is not proper");
+                return;
+            }
+
+            var cellSize = horizontalGridSize / rowCount; 
+            PlaceLines(rowLinesParent, columnLinesParent, rowCount, columnCount, cellSize, horizontalGridSize);
             PlaceCells(cellsParent, rowCount, columnCount, cellSize, cells);
         }
 
@@ -39,9 +52,9 @@ namespace GridManagement
             for (var i = 0; i < lineCount; i++)
             {
                 var line = _objectPoolManager.GetObject(PoolObjectType.GridLine, rowLinesParent.transform);
-                var lineThickness = i == 0 || i == lineCount - 1  ? BoldLineThickness : ThinLineThickness;
+                var lineThickness = i == 0 || i == lineCount - 1  ? boldLineThickness : thinLineThickness;
                 var lineColor = i == 0 || i == lineCount - 1 ? Color.black : new Color(75f / 255f, 74f / 255f, 75f / 255f);
-                (line as GridLine)?.Set(gridSize + lineThickness, lineThickness, lineColor);
+                (line as GridLine)?.Set(i == 0 || i == lineCount - 1 ? gridSize + lineThickness : gridSize - boldLineThickness, lineThickness, lineColor);
             }
 
             columnLinesParent.cellSize = Vector2.up * gridSize;
@@ -51,8 +64,9 @@ namespace GridManagement
             for (var i = 0; i < lineCount; i++)
             {
                 var line = _objectPoolManager.GetObject(PoolObjectType.GridLine, columnLinesParent.transform);
-                var lineThickness = i == 0 || i == lineCount - 1  ? BoldLineThickness : ThinLineThickness;
-                (line as GridLine)?.Set(lineThickness, gridSize + lineThickness, Color.black);
+                var lineThickness = i == 0 || i == lineCount - 1  ? boldLineThickness : thinLineThickness;
+                var lineColor = i == 0 || i == lineCount - 1 ? Color.black : new Color(75f / 255f, 74f / 255f, 75f / 255f);
+                (line as GridLine)?.Set(lineThickness, i == 0 || i == lineCount - 1 ? gridSize + lineThickness : gridSize - boldLineThickness, lineColor);
             }
         }
         
@@ -71,12 +85,12 @@ namespace GridManagement
                     
                     if (cell == null)
                     {
-                        Object.Destroy(cellPoolObject);
+                        Destroy(cellPoolObject);
                         Debug.LogError("Cell couldn't be created");
 
                         foreach (var createdCell in cells)
                         {
-                            Object.Destroy(createdCell);
+                            Destroy(createdCell);
                         }
                         
                         cells.Clear();

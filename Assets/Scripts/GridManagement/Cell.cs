@@ -1,8 +1,11 @@
+using System;
 using ObjectPoolManagement;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
+using Zenject;
 
 namespace GridManagement
 {
@@ -12,11 +15,23 @@ namespace GridManagement
         [SerializeField] private TextMeshProUGUI valueText;
         [SerializeField] private Image background;
 
+        [Inject] private GameManager _gameManager;
+        [Inject] private ObjectPoolManager _objectPoolManager;
+
+        private Cross _cross;
+        private RectTransform _rectTransform;
+        
         public bool IsSelected { get; private set; }
         public int Value { get; private set; }
         public int Row { get; private set; }
         public int Column { get; private set; }
-        
+
+        public override void Initialize(Transform parent, Action<PoolObject> resetAction)
+        {
+            base.Initialize(parent, resetAction);
+            _rectTransform = transform as RectTransform;
+        }
+
         public void Set(string name, int value, int row, int column)
         {
             IsSelected = true;
@@ -31,25 +46,63 @@ namespace GridManagement
 
         private void OnButtonClick()
         {
+            if (_gameManager.GameState != GameState.Running)
+            {
+                return;
+            }
+            
             IsSelected = !IsSelected;
             Signals.CellInteracted?.Invoke(this);
-            SetBackground();
+            if (!IsSelected)
+            {
+                PlaceCross();
+            }
+            else
+            {
+                RemoveCross();
+            }
         }
 
         public void Reset()
         {
-            IsSelected = false;
+            IsSelected = true;
+            SetUI();
         }
 
         private void SetUI()
         {
             valueText.text = Value.ToString();
-            SetBackground();
+            if (!IsSelected)
+            {
+                PlaceCross();
+            }
+            else
+            {
+                RemoveCross();
+            }
         }
 
-        private void SetBackground()
+      
+
+        private void PlaceCross()
         {
-            background.color = IsSelected ? Color.clear : Color.red;
+            if (_rectTransform == null)
+            {
+                return;
+            }
+            
+            _cross = _objectPoolManager.GetObject(PoolObjectType.Cross, transform) as Cross;
+            _cross?.Set(_rectTransform.sizeDelta.x, _rectTransform.sizeDelta.y);
+        }
+
+        private void RemoveCross()
+        {
+            if (_cross == null)
+            {
+                return;
+            }
+            
+            _objectPoolManager.ResetObject(_cross);
         }
     }
 }

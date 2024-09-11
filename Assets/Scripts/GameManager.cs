@@ -8,7 +8,7 @@ using UI;
 using Utilities;
 using Zenject;
 
-public class GameManager : BaseManager
+public class GameManager : Manager
 {
     private GridManager _gridManager;
     private ObjectPoolManager _objectPoolManager;
@@ -16,7 +16,7 @@ public class GameManager : BaseManager
     private GameplayManager _gameplayManager;
     private LevelManager _levelManager;
 
-    private List<BaseManager> _managers;
+    private List<Manager> _managers;
 
     public GameState GameState { get; private set; }
     

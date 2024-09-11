@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4870776014987670489}
   - component: {fileID: 7640281310705355622}
+  - component: {fileID: 99279323774323505}
   m_Layer: 0
   m_Name: ObjectPoolManager
   m_TagString: Untagged
@@ -51,6 +52,25 @@ MonoBehaviour:
   - {fileID: 6931319175539155074, guid: 285e70b2f7f340c488b0eb594810beb5, type: 3}
   - {fileID: 1850272440022553977, guid: 977f55ee1e7a3e346b1c475c63340de0, type: 3}
   - {fileID: 2724838917516524352, guid: 52af5fd84b8b83e43b201e3670baa321, type: 3}
+  - {fileID: 5016724976493015210, guid: c18f53c39536cbb4a9e4621aa63b5721, type: 3}
+--- !u!114 &99279323774323505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3671456089104052826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 7640281310705355622}
+  _identifier: 
+  _useSceneContext: 1
+  _context: {fileID: 0}
+  _bindType: 2
 --- !u!1 &7642829620564242631
 GameObject:
   m_ObjectHideFlags: 0

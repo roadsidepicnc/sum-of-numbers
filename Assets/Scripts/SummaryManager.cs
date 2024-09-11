@@ -3,7 +3,7 @@ using Utilities;
 
 namespace Gameplay
 {
-    public class SummaryManager : BaseManager
+    public class SummaryManager : Manager
     {
         [SerializeField] private Summary summary;
 

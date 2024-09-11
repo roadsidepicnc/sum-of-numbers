@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Zenject;
 
 namespace ObjectPoolManagement
 {
@@ -23,7 +22,7 @@ namespace ObjectPoolManagement
         public virtual void Reset(Transform parent)
         {
             gameObject.SetActive(false);
-            transform.parent = parent;
+            transform.SetParent(parent);
             transform.localPosition = Vector3.zero;
             transform.localScale = Vector3.zero;
             transform.rotation = Quaternion.identity;

@@ -1,52 +1,55 @@
 using System.Collections.Generic;
 using Gameplay;
-using UnityEngine;
-using UnityEngine.UI;
+using LevelManagement;
+using Utilities;
 using Zenject;
 
 namespace GridManagement
 {
-    public class GridManager : BaseManager
+    public class GridManager : Manager
     {
-        [SerializeField] private int rowCount;
-        [SerializeField] private int columnCount;
-        [SerializeField] private GridLayoutGroup cellsParent;
-        [SerializeField] private GridLayoutGroup rowLinesParent;
-        [SerializeField] private GridLayoutGroup columnLinesParent;
-        
-        [Inject] private GridCreator _gridCreator;
-
         private List<Cell> _cellList;
+        private GridCreator _gridCreator;
+        private LevelManager _levelManager;
+        
+        [Inject]
+        private void InstallDependencies(GridCreator gridCreator, LevelManager levelManager)
+        {
+            _gridCreator = gridCreator;
+            _levelManager = levelManager;
+        }
         
         public override void Initialize()
         {
             base.Initialize();
-
-            var horizontalGridSize = cellsParent.GetComponent<RectTransform>().rect.width;
-            var verticalGridSize = cellsParent.GetComponent<RectTransform>().rect.height;
-            
-            if (horizontalGridSize != verticalGridSize || rowCount != columnCount)
-            {
-                Debug.LogError("Grid cell size is not proper");
-                return;
-            }
-
-            var cellSize = horizontalGridSize / rowCount; 
-            
             _cellList = new();
+            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList);
             
-            _gridCreator.Create(rowCount, columnCount, cellsParent, cellSize, horizontalGridSize, _cellList, rowLinesParent, columnLinesParent);
             IsInitialized = true;
         }
 
+        protected override void Register()
+        {
+            Signals.ResetGrid += ResetGrid;
+        }
+
+        protected override void Deregister()
+        {
+            Signals.ResetGrid -= ResetGrid;
+        }
+
+        private void ResetGrid()
+        {
+            foreach (var cell in _cellList)
+            {
+                cell.Reset();
+            }
+        }
+        
         public Cell GetCell(int row, int column) => _cellList.Find(x => x.Row == row && x.Column == column);
         
         public List<Cell> GetRow(int row) => _cellList.FindAll(x => x.Row == row);
         
         public List<Cell> GetColumn(int column) => _cellList.FindAll(x => x.Column == column);
-
-        public int RowCount => rowCount;
-        
-        public int ColumnCount => columnCount;
     }
 }

@@ -1,8 +1,11 @@
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Gameplay;
 using GridManagement;
 using ObjectPoolManagement;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities;
 using Zenject;
 
@@ -11,6 +14,8 @@ namespace UI
     public class TargetScoreText : PoolObject
     {
         [SerializeField] private TextMeshProUGUI targetScoreText;
+        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private Image background;
 
         private AlignmentType _alignmentType;
         private int _alignmentIndex;
@@ -35,11 +40,14 @@ namespace UI
         private void Register()
         {
             Signals.CellInteracted += OnCellInteracted;
+            Signals.ResetGrid += OnResetGrid;
         }
 
         private void Deregister()
         {
             Signals.CellInteracted -= OnCellInteracted;
+            Signals.ResetGrid -= OnResetGrid;
+
         }
 
         public void Set(int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
@@ -52,7 +60,14 @@ namespace UI
 
         private void UpdateUI(bool isCompleted)
         {
-            targetScoreText.color = isCompleted ? Color.green : Color.white;
+            if (isCompleted)
+            {
+                Fade(.4f, .3f, new Color(226f / 255f, 226f / 255f, 226f / 255f, 1f));
+            }
+            else
+            {
+                Fade(1f, .3f, new Color(188f / 255f, 1986f / 255f, 204f / 255f, 1f));
+            }
         }
 
         private void OnCellInteracted(Cell cell)
@@ -72,6 +87,17 @@ namespace UI
                     break;
                 }
             }
+        }
+
+        public async UniTask Fade(float target, float duration, Color backgroundColor)
+        {
+            await canvasGroup.DOFade(target, duration);
+            background.color = backgroundColor;
+        }
+
+        private void OnResetGrid()
+        {
+            Fade(1f, 0f, new Color(188f / 255f, 1986f / 255f, 204f / 255f, 1f));
         }
 
         public enum AlignmentType

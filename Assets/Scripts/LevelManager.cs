@@ -3,19 +3,55 @@ using Gameplay;
 
 namespace LevelManagement
 {
-    public class LevelManager : BaseManager
+    public class LevelManager : Manager
     {
-        public int CurrentLevel { get; private set; }
+        public int CurrentLevelId { get; private set; }
 
-        private List<int> _currentLevelRowTargets;
-        private List<int> _currentLevelColumnTargets;
-        private List<List<int>> _gridData;
+        private LevelData _levelData; 
         
         public override void Initialize()
         {
-            _gridData = new();
-            _currentLevelRowTargets = new();
-            _currentLevelColumnTargets = new();
+            _levelData = new LevelData();
+            _levelData.Create();
+
+            IsInitialized = true;
+        }
+
+        public int GetCellValue(int row, int column)
+        {
+            return _levelData.CellsData[row][column];
+        }
+        
+        public int GetRowTargetValue(int row)
+        {
+            return _levelData.RowTargets[row];
+        }
+        
+        public int GetColumnTargetValue(int column)
+        {
+            return _levelData.ColumnTargets[column];
+        }
+        
+        public int CurrentLevelRowCount => _levelData.RowCount;
+        
+        public int CurrentLevelColumnCount => _levelData.ColumnCount;
+    }
+
+    public class LevelData
+    {
+        public int RowCount;
+        public int ColumnCount;
+        public List<int> RowTargets;
+        public List<int> ColumnTargets;
+        public List<List<int>> CellsData;
+
+        public void Create()
+        {
+            RowCount = 4;
+            ColumnCount = 4;
+            RowTargets = new();
+            ColumnTargets = new();
+            CellsData = new();
             
             var counter = 0;
             for (var i = 0; i < 4; i++)
@@ -25,29 +61,14 @@ namespace LevelManagement
                 list.Add(++counter);
                 list.Add(++counter);
                 list.Add(++counter);
-                _gridData.Add(list);
+                CellsData.Add(list);
             }
 
             for (var i = 0; i < 4; i++)
             {
-                _currentLevelRowTargets.Add(_gridData[i][0] + _gridData[i][1]);
-                _currentLevelColumnTargets.Add(_gridData[0][i] + _gridData[1][i]);
+                RowTargets.Add(CellsData[i][0] + CellsData[i][1]);
+                ColumnTargets.Add(CellsData[0][i] + CellsData[1][i]);
             }
-        }
-
-        public int GetCellValue(int row, int column)
-        {
-            return _gridData[row][column];
-        }
-        
-        public int GetRowTargetValue(int row)
-        {
-            return _currentLevelRowTargets[row];
-        }
-        
-        public int GetColumnTargetValue(int column)
-        {
-            return _currentLevelColumnTargets[column];
         }
     }
 }
