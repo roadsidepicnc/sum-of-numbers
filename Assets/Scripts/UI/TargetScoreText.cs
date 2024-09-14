@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gameplay;
 using GridManagement;
@@ -55,18 +56,36 @@ namespace UI
             targetScoreText.text = value.ToString();
             _alignmentType = alignmentType;
             _alignmentIndex = alignmentIndex;
-            GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+            var rectTransform = GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(width, height);
+
+            var backgroundTransform = background.GetComponent<RectTransform>();
+            switch (alignmentType)
+            {
+                case AlignmentType.Column:
+                    backgroundTransform.offsetMin = new Vector2(5f, 0f);
+                    backgroundTransform.offsetMax = new Vector2(-5f, 0f);
+                    rectTransform.pivot = new Vector2(.5f, 1f);
+                    rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, 0f);
+                    break;
+                case AlignmentType.Row:
+                    backgroundTransform.offsetMin = new Vector2(0f, 5f);
+                    backgroundTransform.offsetMax = new Vector2(0f, -5f);
+                    rectTransform.pivot = new Vector2(0f, .5f);
+                    rectTransform.localPosition = new Vector3(0f, rectTransform.localPosition.y);
+                    break;
+            }
         }
 
         private void UpdateUI(bool isCompleted)
         {
             if (isCompleted)
             {
-                Fade(.4f, .3f, new Color(226f / 255f, 226f / 255f, 226f / 255f, 1f));
+                Fade(Constants.TargetScoreColorChangeDuration, Constants.TargetScoreBackgroundCompletedColor, Constants.TargetScoreTextCompletedColor);
             }
             else
             {
-                Fade(1f, .3f, new Color(188f / 255f, 1986f / 255f, 204f / 255f, 1f));
+                Fade(Constants.TargetScoreColorChangeDuration, Constants.TargetScoreBackgroundNotCompletedColor, Constants.TargetScoreTextNotCompletedColor);
             }
         }
 
@@ -89,15 +108,17 @@ namespace UI
             }
         }
 
-        public async UniTask Fade(float target, float duration, Color backgroundColor)
+        private void Fade(float duration, Color backgroundTargetColor, Color textTargetColor)
         {
-            await canvasGroup.DOFade(target, duration);
-            background.color = backgroundColor;
+            background.DOComplete();
+            background.DOColor(backgroundTargetColor, duration);
+            targetScoreText.DOComplete();
+            targetScoreText.DOColor(textTargetColor, duration);
         }
 
         private void OnResetGrid()
         {
-            Fade(1f, 0f, new Color(188f / 255f, 1986f / 255f, 204f / 255f, 1f));
+            Fade(0f, Constants.TargetScoreBackgroundNotCompletedColor, Constants.TargetScoreTextNotCompletedColor);
         }
 
         public enum AlignmentType

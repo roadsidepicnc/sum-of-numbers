@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Gameplay;
 using LevelManagement;
+using UI;
 using Utilities;
 using Zenject;
 
@@ -9,6 +10,9 @@ namespace GridManagement
     public class GridManager : Manager
     {
         private List<Cell> _cellList;
+        private List<TargetScoreText> _rowTargetScoreTexts;
+        private List<TargetScoreText> _columnTargetScoreTexts;
+        
         private GridCreator _gridCreator;
         private LevelManager _levelManager;
         
@@ -22,8 +26,12 @@ namespace GridManagement
         public override void Initialize()
         {
             base.Initialize();
+            
             _cellList = new();
-            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList);
+            _rowTargetScoreTexts = new();
+            _columnTargetScoreTexts = new();
+            
+            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList, _rowTargetScoreTexts, _columnTargetScoreTexts);
             
             IsInitialized = true;
         }

@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using Gameplay;
-using GridManagement;
 using LevelManagement;
-using ObjectPoolManagement;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,23 +10,23 @@ namespace UI
 { 
     public class UIManager : Manager
     {
-        [SerializeField] private Transform rowTargetScoreTextsParent;
-        [SerializeField] private Transform columnTargetScoreTextsParent;
+        public float CanvasWidth { get; private set; }
+        public float CanvasHeight { get; private set; }
+        public float UnitSize { get; private set; }
+        
         [SerializeField] private Button homeButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button resetButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private TextMeshProUGUI levelDefinitionText;
-
-        private ObjectPoolManager _objectPoolManager;
+        [SerializeField] private Canvas canvas;
+        [SerializeField] private RectTransform topPanel;
+        
         private LevelManager _levelManager;
-        private List<TargetScoreText> _rowTargetScoreTexts;
-        private List<TargetScoreText> _columnTargetScoreTexts;
-
+        
         [Inject]
-        public void InstallDependencies(ObjectPoolManager objectPoolManager, LevelManager levelManager)
+        public void InstallDependencies(LevelManager levelManager)
         {
-            _objectPoolManager = objectPoolManager;
             _levelManager = levelManager;
         }
 
@@ -37,50 +34,15 @@ namespace UI
         {
             base.Initialize();
 
-            _rowTargetScoreTexts = new();
-            _columnTargetScoreTexts = new();
-
-            CreateRowTargetScoreTexts(_levelManager.CurrentLevelRowCount, _rowTargetScoreTexts, rowTargetScoreTextsParent);
-            CreateColumnTargetScoreTexts(_levelManager.CurrentLevelColumnCount, _columnTargetScoreTexts, columnTargetScoreTextsParent);
-
+            CalculateUnitSize();
             SetButtons();
             SetTexts();
             
+            topPanel.anchoredPosition += Vector2.down * ScreenSafeAreaTopDifferenceInPixels() / 2;
+            
             IsInitialized = true;
         }
-
-        protected override void Register()
-        {
-        }
-
-        protected override void Deregister()
-        {
-        }
-
-        private void CreateRowTargetScoreTexts(int count, List<TargetScoreText> targetScoreTextList, Transform parent)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
-                var targetScoreText = (poolObject as TargetScoreText);
-                var ratio = (float)_levelManager.CurrentLevelRowCount / Constants.DefaultGridRowCount; 
-                targetScoreText?.Set(_levelManager.GetRowTargetValue(i), TargetScoreText.AlignmentType.Row, i, Constants.DefaultTargetScoreTextHeight, Constants.DefaultTargetScoreTextWidth); 
-                targetScoreTextList.Add(targetScoreText);
-            }
-        }
-
-        private void CreateColumnTargetScoreTexts(int count, List<TargetScoreText> targetScoreTextList,
-            Transform parent)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
-                var targetScoreText = (poolObject as TargetScoreText);
-                targetScoreText?.Set(_levelManager.GetColumnTargetValue(i), TargetScoreText.AlignmentType.Column, i, Constants.DefaultTargetScoreTextWidth, Constants.DefaultTargetScoreTextHeight);
-                targetScoreTextList.Add(targetScoreText);
-            }
-        }
-
+        
         private void SetButtons()
         {
             homeButton.onClick.RemoveAllListeners();
@@ -102,6 +64,29 @@ namespace UI
         {
             levelNumberText.text = "Level " + (_levelManager.CurrentLevelId + 1);
             levelDefinitionText.text = "Basic";
+        }
+
+        private void CalculateUnitSize()
+        {
+            CanvasHeight = canvas.GetComponent<RectTransform>().sizeDelta.y;
+            CanvasWidth = canvas.GetComponent<RectTransform>().sizeDelta.x;
+            UnitSize = canvas.referencePixelsPerUnit * ( CanvasHeight / Constants.DefaultScreenHeight);
+        }
+        
+        private float SafeAreaChangeInUnits()
+        {
+            return ScreenSafeAreaTopDifferenceInPixels() * 0.5f / UnitSize;
+        }
+
+        private float ScreenSafeAreaTopDifferenceInPixels()
+        {
+            var screenSafeAreaTopDifferenceInPixels = Mathf.Abs(Screen.safeArea.max.y - Screen.height);
+            if (screenSafeAreaTopDifferenceInPixels > 0f)
+            {
+                screenSafeAreaTopDifferenceInPixels += UnitSize / 2f; 
+            }
+        
+            return screenSafeAreaTopDifferenceInPixels;
         }
     }
 }

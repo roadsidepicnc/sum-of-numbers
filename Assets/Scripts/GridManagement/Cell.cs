@@ -65,8 +65,8 @@ namespace GridManagement
 
         public void Reset()
         {
+            RemoveCross();
             IsSelected = true;
-            SetUI();
         }
 
         private void SetUI()
@@ -103,6 +103,7 @@ namespace GridManagement
             }
             
             _objectPoolManager.ResetObject(_cross);
+            _cross = null;
         }
     }
 }

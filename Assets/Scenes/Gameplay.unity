@@ -553,7 +553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 272}
+  m_AnchoredPosition: {x: 0, y: 226}
   m_SizeDelta: {x: 175, y: 175}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &726404697
@@ -868,7 +868,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 0.275
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1292,6 +1292,10 @@ PrefabInstance:
       value: Board
       objectReference: {fileID: 0}
     - target: {fileID: 2103394618230734309, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
+      propertyPath: m_Spacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103394618230734309, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_ChildAlignment
       value: 4
       objectReference: {fileID: 0}
@@ -1325,11 +1329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5061567765233351641, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 900
+      value: 950
       objectReference: {fileID: 0}
     - target: {fileID: 5061567765233351641, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 900
+      value: 950
       objectReference: {fileID: 0}
     - target: {fileID: 5061567765233351641, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1365,7 +1369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5061567765233351641, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 49
       objectReference: {fileID: 0}
     - target: {fileID: 5061567765233351641, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1379,13 +1383,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5378094888926882203, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 850
+      objectReference: {fileID: 0}
     - target: {fileID: 6812820595854554588, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 850
+      objectReference: {fileID: 0}
+    - target: {fileID: 6812820595854554588, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 8939892893120452263, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
       propertyPath: m_Spacing
-      value: 28
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87917a5504f72df40b94e2c6740d8865, type: 3}
@@ -1767,6 +1779,14 @@ PrefabInstance:
       propertyPath: columnLinesParent
       value: 
       objectReference: {fileID: 1983561338}
+    - target: {fileID: 3163411877933250770, guid: eedc7954bb4f49e4faedd8985500ab32, type: 3}
+      propertyPath: rowTargetScoreTextsParent
+      value: 
+      objectReference: {fileID: 214464935}
+    - target: {fileID: 3163411877933250770, guid: eedc7954bb4f49e4faedd8985500ab32, type: 3}
+      propertyPath: columnTargetScoreTextsParent
+      value: 
+      objectReference: {fileID: 1983322812}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eedc7954bb4f49e4faedd8985500ab32, type: 3}
 --- !u!1001 &9173101567169344562
@@ -1824,6 +1844,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 9173101566775442525, guid: 05d91379e999b5c428f28ee967b4f9c6, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1127592538}
+    - target: {fileID: 9173101566775442525, guid: 05d91379e999b5c428f28ee967b4f9c6, type: 3}
+      propertyPath: topPanel
+      value: 
+      objectReference: {fileID: 1840702034}
     - target: {fileID: 9173101566775442525, guid: 05d91379e999b5c428f28ee967b4f9c6, type: 3}
       propertyPath: homeButton
       value: 

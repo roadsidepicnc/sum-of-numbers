@@ -47,24 +47,25 @@ namespace LevelManagement
 
         public void Create()
         {
-            RowCount = 4;
-            ColumnCount = 4;
+            RowCount = 5;
+            ColumnCount = 5;
             RowTargets = new();
             ColumnTargets = new();
             CellsData = new();
             
             var counter = 0;
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < RowCount; i++)
             {
                 var list = new List<int>();
-                list.Add(++counter);
-                list.Add(++counter);
-                list.Add(++counter);
-                list.Add(++counter);
+                for (var j = 0; j < RowCount; j++)
+                {
+                    list.Add(++counter);
+                }
+                
                 CellsData.Add(list);
             }
 
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < RowCount; i++)
             {
                 RowTargets.Add(CellsData[i][0] + CellsData[i][1]);
                 ColumnTargets.Add(CellsData[0][i] + CellsData[1][i]);

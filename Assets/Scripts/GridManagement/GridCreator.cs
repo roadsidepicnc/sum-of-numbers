@@ -4,6 +4,7 @@ using ObjectPoolManagement;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 using Zenject;
 
 namespace GridManagement
@@ -18,6 +19,8 @@ namespace GridManagement
         [SerializeField] private GridLayoutGroup cellsParent;
         [SerializeField] private GridLayoutGroup rowLinesParent;
         [SerializeField] private GridLayoutGroup columnLinesParent;
+        [SerializeField] private Transform rowTargetScoreTextsParent;
+        [SerializeField] private Transform columnTargetScoreTextsParent;
 
         [Inject]
         private void InstallDependencies(ObjectPoolManager objectPoolManager, LevelManager levelManager)
@@ -26,7 +29,7 @@ namespace GridManagement
             _levelManager = levelManager;
         }
         
-        public void Create(int rowCount, int columnCount, List<Cell> cells)
+        public void Create(int rowCount, int columnCount, List<Cell> cells, List<TargetScoreText> rowTargetScoreTexts, List<TargetScoreText> columnTargetScoreTexts)
         {
             var horizontalGridSize = cellsParent.GetComponent<RectTransform>().rect.width;
             var verticalGridSize = cellsParent.GetComponent<RectTransform>().rect.height;
@@ -40,6 +43,8 @@ namespace GridManagement
             var cellSize = horizontalGridSize / rowCount; 
             PlaceLines(rowLinesParent, columnLinesParent, rowCount, columnCount, cellSize, horizontalGridSize);
             PlaceCells(cellsParent, rowCount, columnCount, cellSize, cells);
+            CreateRowTargetScoreTexts(rowCount, rowTargetScoreTexts, rowTargetScoreTextsParent, cellSize);
+            CreateColumnTargetScoreTexts(columnCount, columnTargetScoreTexts, columnTargetScoreTextsParent, cellSize);
         }
 
         private void PlaceLines(GridLayoutGroup rowLinesParent, GridLayoutGroup columnLinesParent, int rowCount, int columnCount, float cellSize, float gridSize)
@@ -100,6 +105,28 @@ namespace GridManagement
                     cell.Set("Cell (" + i + "," + j + ")", _levelManager.GetCellValue(i, j), i, j);
                     cells.Add(cell);
                 }
+            }
+        }
+        
+        private void CreateRowTargetScoreTexts(int count, List<TargetScoreText> targetScoreTextList, Transform parent, float cellSize)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
+                var targetScoreText = (poolObject as TargetScoreText);
+                targetScoreText?.Set(_levelManager.GetRowTargetValue(i), TargetScoreText.AlignmentType.Row, i, 100f, cellSize); 
+                targetScoreTextList.Add(targetScoreText);
+            }
+        }
+
+        private void CreateColumnTargetScoreTexts(int count, List<TargetScoreText> targetScoreTextList, Transform parent, float cellSize)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
+                var targetScoreText = poolObject as TargetScoreText;
+                targetScoreText?.Set(_levelManager.GetColumnTargetValue(i), TargetScoreText.AlignmentType.Column, i, cellSize, 100f);
+                targetScoreTextList.Add(targetScoreText);
             }
         }
     }
