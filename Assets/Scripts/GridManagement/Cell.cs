@@ -4,7 +4,6 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities;
 using Zenject;
 
 namespace GridManagement
@@ -15,8 +14,8 @@ namespace GridManagement
         [SerializeField] private TextMeshProUGUI valueText;
         [SerializeField] private Image background;
 
-        [Inject] private GameManager _gameManager;
         [Inject] private ObjectPoolManager _objectPoolManager;
+        [Inject] private SignalManager _signalManager;
 
         private Cross _cross;
         private RectTransform _rectTransform;
@@ -46,13 +45,13 @@ namespace GridManagement
 
         private void OnButtonClick()
         {
-            if (_gameManager.GameState != GameState.Running)
+            if (GameManager.GameState != GameState.OnGameplay)
             {
                 return;
             }
             
             IsSelected = !IsSelected;
-            Signals.CellInteracted?.Invoke(this);
+            _signalManager.CellInteracted?.Invoke(this);
             if (!IsSelected)
             {
                 PlaceCross();

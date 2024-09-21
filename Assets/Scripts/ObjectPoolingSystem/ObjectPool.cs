@@ -18,6 +18,7 @@ namespace ObjectPoolManagement
         public int PooledObjectCount => _pooledObjects.Count;
         public int ActiveObjectCount => _activeObjects.Count;
         
+        
         public void Initialize(Transform parent, PoolObject prefab, int initialObjectCount)
         {
             _prefab = prefab;

@@ -15,12 +15,14 @@ namespace GridManagement
         
         private GridCreator _gridCreator;
         private LevelManager _levelManager;
+        private SignalManager _signalManager;
         
         [Inject]
-        private void InstallDependencies(GridCreator gridCreator, LevelManager levelManager)
+        private void InstallDependencies(GridCreator gridCreator, LevelManager levelManager, SignalManager signalManager)
         {
             _gridCreator = gridCreator;
             _levelManager = levelManager;
+            _signalManager = signalManager;
         }
         
         public override void Initialize()
@@ -38,12 +40,12 @@ namespace GridManagement
 
         protected override void Register()
         {
-            Signals.ResetGrid += ResetGrid;
+            _signalManager.ResetGrid += ResetGrid;
         }
 
         protected override void Deregister()
         {
-            Signals.ResetGrid -= ResetGrid;
+            _signalManager.ResetGrid -= ResetGrid;
         }
 
         private void ResetGrid()

@@ -1,5 +1,3 @@
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gameplay;
 using GridManagement;
@@ -20,39 +18,25 @@ namespace UI
 
         private AlignmentType _alignmentType;
         private int _alignmentIndex;
-        private GameplayManager _gameplayManager;
-
-        [Inject]
-        private void InstallDependencies(GameplayManager gameplayManager)
-        {
-            _gameplayManager = gameplayManager;
-        }
-
-        private void OnEnable()
-        {
-            Register();
-        }
-
-        private void OnDisable()
-        {
-            Deregister();
-        }
-
+        
+        [Inject] private GameplayManager _gameplayManager;
+        [Inject] private SignalManager _signalManager;
+        
         private void Register()
         {
-            Signals.CellInteracted += OnCellInteracted;
-            Signals.ResetGrid += OnResetGrid;
+            _signalManager.CellInteracted += OnCellInteracted;
+            _signalManager.ResetGrid += OnResetGrid;
         }
 
         private void Deregister()
         {
-            Signals.CellInteracted -= OnCellInteracted;
-            Signals.ResetGrid -= OnResetGrid;
-
+            _signalManager.CellInteracted -= OnCellInteracted;
+            _signalManager.ResetGrid -= OnResetGrid;
         }
 
         public void Set(int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
         {
+            Register();
             targetScoreText.text = value.ToString();
             _alignmentType = alignmentType;
             _alignmentIndex = alignmentIndex;
@@ -75,6 +59,12 @@ namespace UI
                     rectTransform.localPosition = new Vector3(0f, rectTransform.localPosition.y);
                     break;
             }
+        }
+
+        public override void Reset(Transform parent)
+        {
+            base.Reset(parent);
+            Deregister();
         }
 
         private void UpdateUI(bool isCompleted)

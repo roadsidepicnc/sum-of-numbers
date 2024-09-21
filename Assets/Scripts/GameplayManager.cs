@@ -1,7 +1,8 @@
-using System;
 using System.Collections.Generic;
 using GridManagement;
 using LevelManagement;
+using UI;
+using UI.Popup;
 using UnityEngine;
 using Utilities;
 using Zenject;
@@ -12,17 +13,21 @@ namespace Gameplay
     {
         private GridManager _gridManager;
         private LevelManager _levelManager;
+        private PanelManager _panelManager;
         private GameManager _gameManager;
+        private SignalManager _signalManager;
         
         private List<int> _rowTargetScores;
         private List<int> _columnTargetScores;
         
         [Inject]
-        private void InstallDependencies(GridManager gridManager, LevelManager levelManager, GameManager gameManager)
+        private void InstallDependencies(GridManager gridManager, LevelManager levelManager, PanelManager panelManager, GameManager gameManager, SignalManager signalManager)
         {
             _gridManager = gridManager;
             _levelManager = levelManager;
+            _panelManager = panelManager;
             _gameManager = gameManager;
+            _signalManager = signalManager;
         }
         
         public override void Initialize()
@@ -47,14 +52,12 @@ namespace Gameplay
         
         protected override void Register()
         {
-            Signals.CellInteracted += OnCellInteracted;
-            Signals.GameStateChanged += OnGameStateChanged;
+            _signalManager.CellInteracted += OnCellInteracted;
         }
 
         protected override void Deregister()
         {
-            Signals.CellInteracted -= OnCellInteracted;
-            Signals.GameStateChanged -= OnGameStateChanged;
+            _signalManager.CellInteracted -= OnCellInteracted;
         }
         
         private void OnCellInteracted(Cell cell)
@@ -118,19 +121,14 @@ namespace Gameplay
             return true;
         }
         
-        private void OnGameStateChanged(GameState gameState)
-        {
-            if (gameState != GameState.Running)
-            {
-                return;
-            }
-        }
-
         private void Update()
         {
-            if (_gameManager.GameState != GameState.Finished && Input.GetKeyDown(KeyCode.A))
+            if (GameManager.GameState != GameState.Finished && Input.GetKeyDown(KeyCode.A))
             {
                 _gameManager.SetGameState(GameState.Finished);
+                _panelManager.Show(PanelType.WinPopup);
+                _panelManager.Show(PanelType.WinPopup, false);
+                _panelManager.Show(PanelType.WinPopup, false);
             }
         }
     }

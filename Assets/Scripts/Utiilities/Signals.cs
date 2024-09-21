@@ -5,16 +5,18 @@ namespace Utilities
 {
     public static class Signals
     {
-        public static Action <GameState> GameStateChanged;
-        public static Action <Cell> CellInteracted;
-        public static Action ResetGrid;
+        //public static Action <GameState> GameStateChanged;
+        //public static Action GameInitialized;
+        //public static Action <Cell> CellInteracted;
+        //public static Action ResetGrid;
     }
 }
 
 public enum GameState
 {
-    Initializing,
-    Running,
+    Loading,
+    OnGameplay,
+    OnMenu,
     Finished,
     Paused
 }

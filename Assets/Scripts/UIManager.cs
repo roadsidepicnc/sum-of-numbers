@@ -17,17 +17,27 @@ namespace UI
         [SerializeField] private Button homeButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button resetButton;
+        [SerializeField] private Button playButton;
+        [SerializeField] private Button levelFinishedPanelNextLevelButton;
+        [SerializeField] private Button levelFinishedPanelHomeButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private TextMeshProUGUI levelDefinitionText;
+        [SerializeField] private TextMeshProUGUI playButtonLevelDefinitionText;
+        [SerializeField] private TextMeshProUGUI playButtonLevelNumberText;
         [SerializeField] private Canvas canvas;
         [SerializeField] private RectTransform topPanel;
+        [SerializeField] private GameObject mainMenuPanel;
+        [SerializeField] private GameObject gameplayPanel;
+        [SerializeField] private GameObject levelFinishedPanel;
         
         private LevelManager _levelManager;
+        private SignalManager _signalManager;
         
         [Inject]
-        public void InstallDependencies(LevelManager levelManager)
+        public void InstallDependencies(LevelManager levelManager, SignalManager signalManager)
         {
             _levelManager = levelManager;
+            _signalManager = signalManager;
         }
 
         public override void Initialize()
@@ -57,13 +67,15 @@ namespace UI
 
         private void OnResetButtonClick()
         {
-            Signals.ResetGrid?.Invoke();
+            _signalManager.ResetGrid?.Invoke();
         }
 
         private void SetTexts()
         {
             levelNumberText.text = "Level " + (_levelManager.CurrentLevelId + 1);
             levelDefinitionText.text = "Basic";
+            playButtonLevelNumberText.text = "Level " + (_levelManager.CurrentLevelId + 1);
+            playButtonLevelDefinitionText.text = "Basic";
         }
 
         private void CalculateUnitSize()
@@ -87,6 +99,30 @@ namespace UI
             }
         
             return screenSafeAreaTopDifferenceInPixels;
+        }
+        
+        private void OnGameStateChanged(GameState gameState)
+        {
+            /*
+            switch (gameState)
+            {
+                case GameState.Running:
+                    gameplayPanel.SetActive(true);
+                    mainMenuPanel.SetActive(false);
+                    levelFinishedPanel.SetActive(false);
+                    break;
+                case GameState.OnMenu:
+                    mainMenuPanel.SetActive(true);
+                    gameplayPanel.SetActive(false);
+                    levelFinishedPanel.SetActive(false);
+                    break;
+                case GameState.Finished:
+                    levelFinishedPanel.SetActive(true);
+                    mainMenuPanel.SetActive(false);
+                    gameplayPanel.SetActive(false);
+                    break;
+                    
+            }*/
         }
     }
 }
