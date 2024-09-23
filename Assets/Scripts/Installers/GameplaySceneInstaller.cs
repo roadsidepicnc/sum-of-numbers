@@ -1,7 +1,7 @@
 using Gameplay;
 using GridManagement;
 using Zenject;
-using CustomObjectPool = ObjectPoolManagement.ObjectPool;
+using CustomObjectPool = ObjectPoolingSystem.ObjectPool;
 
 public class GameplaySceneInstaller : MonoInstaller<MainMenuInstaller>
 {

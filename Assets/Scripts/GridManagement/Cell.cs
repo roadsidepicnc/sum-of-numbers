@@ -1,5 +1,5 @@
 using System;
-using ObjectPoolManagement;
+using ObjectPoolingSystem;
 using TMPro;
 using UI;
 using UnityEngine;
@@ -68,6 +68,13 @@ namespace GridManagement
             IsSelected = true;
         }
 
+        public override void Reset(Transform parent)
+        {
+            IsSelected = true;
+            RemoveCross();
+            base.Reset(parent);
+        }
+
         private void SetUI()
         {
             valueText.text = Value.ToString();
@@ -80,9 +87,7 @@ namespace GridManagement
                 RemoveCross();
             }
         }
-
-      
-
+        
         private void PlaceCross()
         {
             if (_rectTransform == null)

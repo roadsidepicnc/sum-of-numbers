@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4870776014987670489}
   - component: {fileID: 7640281310705355622}
-  - component: {fileID: -2902259627796365460}
+  - component: {fileID: 2025305412160073084}
   m_Layer: 0
   m_Name: ObjectPoolManager
   m_TagString: Untagged
@@ -53,7 +53,7 @@ MonoBehaviour:
   - {fileID: 1850272440022553977, guid: 977f55ee1e7a3e346b1c475c63340de0, type: 3}
   - {fileID: 2724838917516524352, guid: 52af5fd84b8b83e43b201e3670baa321, type: 3}
   - {fileID: 5016724976493015210, guid: c18f53c39536cbb4a9e4621aa63b5721, type: 3}
---- !u!114 &-2902259627796365460
+--- !u!114 &2025305412160073084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

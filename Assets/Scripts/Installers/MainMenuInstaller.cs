@@ -1,5 +1,5 @@
 using Zenject;
-using CustomObjectPool = ObjectPoolManagement.ObjectPool;
+using CustomObjectPool = ObjectPoolingSystem.ObjectPool;
 
 public class MainMenuInstaller : MonoInstaller<MainMenuInstaller>
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Gameplay;
-using ObjectPoolManagement;
+using ObjectPoolingSystem;
 using UnityEngine;
 using Zenject;
 
@@ -28,11 +28,10 @@ public class MainMenuSceneLoader : MonoBehaviour
 
     private async void Initialize()
     {
-        _managers = new();
+        _objectPoolManager.Initialize();
+        await UniTask.WaitUntil(() => _objectPoolManager.IsInitialized);
         
-
-        _managers.Add(_objectPoolManager);
-
+        _managers = new();
         
         foreach (var manager in _managers)
         {

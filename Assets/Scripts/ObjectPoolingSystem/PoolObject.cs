@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace ObjectPoolManagement
+namespace ObjectPoolingSystem
 {
     public abstract class PoolObject : MonoBehaviour, IPoolable<PoolObject>
     {

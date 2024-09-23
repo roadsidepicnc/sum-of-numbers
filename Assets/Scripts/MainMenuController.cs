@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using LevelManagement;
+using ObjectPoolingSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,13 +25,15 @@ public class MainMenuController : MonoBehaviour
     private LevelManager _levelManager;
     private SignalManager _signalManager;
     private GameManager _gameManager;
+    private ObjectPoolManager _objectPoolManager;
     
     [Inject]
-    private void InstallDependencies(GameManager gameManager, LevelManager levelManager, SignalManager signalManager)
+    private void InstallDependencies(GameManager gameManager, LevelManager levelManager, SignalManager signalManager, ObjectPoolManager objectPoolManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _signalManager = signalManager;
+        _objectPoolManager = objectPoolManager;
     }
     
     private void OnEnable()
@@ -83,6 +86,7 @@ public class MainMenuController : MonoBehaviour
     private async void OnPlayButtonClick()
     {
         _gameManager.SetGameState(GameState.Loading);
+        _objectPoolManager.ResetPools();
         await SceneManager.LoadSceneAsync("Gameplay");
     }
 

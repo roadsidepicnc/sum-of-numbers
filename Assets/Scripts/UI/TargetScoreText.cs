@@ -1,7 +1,7 @@
 using DG.Tweening;
 using Gameplay;
 using GridManagement;
-using ObjectPoolManagement;
+using ObjectPoolingSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,8 +63,9 @@ namespace UI
 
         public override void Reset(Transform parent)
         {
-            base.Reset(parent);
             Deregister();
+            UpdateUI(false);
+            base.Reset(parent);
         }
 
         private void UpdateUI(bool isCompleted)

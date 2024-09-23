@@ -4,30 +4,30 @@ using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
 
-namespace ObjectPoolManagement
+namespace ObjectPoolingSystem
 {
     public class ObjectPool
     {
         private readonly Stack<PoolObject> _pooledObjects = new();
         private readonly HashSet<PoolObject> _activeObjects = new();
         private PoolObject _prefab;
-        private int _initialObjectCount;
-        
+
         [Inject] private DiContainer _diContainer;
-        
+        [Inject] private ObjectPoolContainer _objectPoolContainer;
+
         public int PooledObjectCount => _pooledObjects.Count;
         public int ActiveObjectCount => _activeObjects.Count;
-        
-        
+
         public void Initialize(Transform parent, PoolObject prefab, int initialObjectCount)
         {
             _prefab = prefab;
-            _initialObjectCount = initialObjectCount;
             
-            for (var i = 0; i < _initialObjectCount; i++)
+            RestoreObjects();
+
+            for (var i = 0; i < Math.Max(0, initialObjectCount - _pooledObjects.Count); i++)
             {
                 var poolObject = Object.Instantiate(_prefab);
-                ResetPoolObject(poolObject, parent);
+                ResetPoolObject(parent, poolObject);
             }
         }
 
@@ -41,7 +41,7 @@ namespace ObjectPoolManagement
             return poolObject;
         }
 
-        public void ResetPoolObject(PoolObject poolObject, Transform parent)
+        public void ResetPoolObject(Transform parent, PoolObject poolObject)
         {
             _pooledObjects.Push(poolObject);
             _activeObjects.Remove(poolObject);
@@ -52,20 +52,31 @@ namespace ObjectPoolManagement
         {
             foreach (var activeObject in _activeObjects)
             {
-                ResetPoolObject(activeObject, parent);
+                _pooledObjects.Push(activeObject);
+                activeObject.Reset(parent);
+            }
+
+            _activeObjects.Clear();
+        }
+
+        public void StoreObjects()
+        {
+            _objectPoolContainer.PoolObjects.AddRange(_activeObjects);
+            _objectPoolContainer.PoolObjects.AddRange(_pooledObjects);
+        }
+
+        public void RestoreObjects()
+        {
+            _pooledObjects.Clear();
+            
+            foreach (var poolObject in _objectPoolContainer.PoolObjects.FindAll(x => x.poolObjectType == _prefab.poolObjectType))
+            {
+                _pooledObjects.Push(poolObject);
             }
         }
-        
+
         public class Factory : PlaceholderFactory<ObjectPool>
         {
         }
     }
-}
-
-public enum PoolObjectType
-{
-    Cell = 1,
-    TargetScoreText = 2,
-    GridLine = 3,
-    Cross = 4
 }
