@@ -1,13 +1,12 @@
 using System.Collections.Generic;
+using Gameplay;
 using UnityEngine;
 using Zenject;
 
 namespace ObjectPoolingSystem
 { 
-    public class ObjectPoolManager : MonoBehaviour
+    public class ObjectPoolManager : Manager
     {
-        public bool IsInitialized { get; private set; }
-        
         [Inject] private ObjectPool.Factory _objectPoolFactory;
         [Inject] private ObjectPoolContainer _objectPoolContainer;
         
@@ -18,7 +17,7 @@ namespace ObjectPoolingSystem
         
         private Transform PooledObjectsParent => _objectPoolContainer.transform;
         
-        public void Initialize()
+        public override void Initialize()
         {
             CreatePools(initialObjectCount);
             

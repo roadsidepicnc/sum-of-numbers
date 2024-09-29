@@ -2,21 +2,20 @@ using System;
 using CommandManagement;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using UI.Popup;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace UI
 {
-    public abstract class Panel : MonoBehaviour
+    public abstract class Popup : MonoBehaviour
     {
         [SerializeField] protected RectTransform rectTransform;
         [SerializeField] protected Button cancelButton;
-        [SerializeField] protected PanelType panelType;
+        [SerializeField] protected PopupType popupType;
         
-        private PanelCommand _command;
+        private PopupCommand _command;
 
-        public PanelType PanelType => panelType;
+        public PopupType PopupType => popupType;
         
         protected bool IsOpening;
         
@@ -24,7 +23,7 @@ namespace UI
         
         public virtual bool Displayable => true;
         
-        public void SetCommand(PanelCommand command)
+        public void SetCommand(PopupCommand command)
         {
             _command = command;
         }
@@ -51,10 +50,5 @@ namespace UI
             rectTransform.gameObject.SetActive(false);
             _command?.Complete();
         }
-    }
-
-    public enum PanelType
-    {
-        WinPopup
     }
 }

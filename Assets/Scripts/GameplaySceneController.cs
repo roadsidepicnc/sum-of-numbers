@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using LevelManagement;
 using ObjectPoolingSystem;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,23 +9,13 @@ using Zenject;
 
 public class GameplaySceneController : MonoBehaviour
 {
+    [Inject] private LevelManager _levelManager;
+    [Inject] private SignalManager _signalManager;
+    [Inject] private GameManager _gameManager;
+    [Inject] private ObjectPoolManager _objectPoolManager;
+    
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button homeButton;
-    
-    
-    private LevelManager _levelManager;
-    private SignalManager _signalManager;
-    private GameManager _gameManager;
-    private ObjectPoolManager _objectPoolManager;
-    
-    [Inject]
-    private void InstallDependencies(GameManager gameManager, LevelManager levelManager, SignalManager signalManager, ObjectPoolManager objectPoolManager)
-    {
-        _gameManager = gameManager;
-        _levelManager = levelManager;
-        _signalManager = signalManager;
-        _objectPoolManager = objectPoolManager;
-    }
     
     private void OnEnable()
     {

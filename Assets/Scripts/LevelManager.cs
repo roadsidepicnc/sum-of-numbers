@@ -17,58 +17,54 @@ namespace LevelManagement
             IsInitialized = true;
         }
 
-        public int GetCellValue(int row, int column)
+        public LevelData.CellData GetCellData(int row, int column)
         {
             return _levelData.CellsData[row][column];
-        }
-        
-        public int GetRowTargetValue(int row)
-        {
-            return _levelData.RowTargets[row];
-        }
-        
-        public int GetColumnTargetValue(int column)
-        {
-            return _levelData.ColumnTargets[column];
         }
         
         public int CurrentLevelRowCount => _levelData.RowCount;
         
         public int CurrentLevelColumnCount => _levelData.ColumnCount;
+        public int CurrentLevelHeartCount => _levelData.HeartCount;
     }
 
     public class LevelData
     {
-        public int RowCount;
-        public int ColumnCount;
-        public List<int> RowTargets;
-        public List<int> ColumnTargets;
-        public List<List<int>> CellsData;
+        public int RowCount { get; private set; }
+        public int ColumnCount { get; private set; }
+        public int HeartCount { get; private set; }
+        public List<List<CellData>> CellsData { get; private set; }
 
         public void Create()
         {
             RowCount = 5;
             ColumnCount = 5;
-            RowTargets = new();
-            ColumnTargets = new();
+            HeartCount = 3;
+
             CellsData = new();
             
             var counter = 0;
             for (var i = 0; i < RowCount; i++)
             {
-                var list = new List<int>();
+                var list = new List<CellData>();
                 for (var j = 0; j < RowCount; j++)
                 {
-                    list.Add(++counter);
+                    list.Add(new CellData(++counter, j == 0));
                 }
                 
                 CellsData.Add(list);
             }
+        }
+        
+        public struct CellData
+        {
+            public bool IsTarget { get; private set; }
+            public int Value { get; private set; }
 
-            for (var i = 0; i < RowCount; i++)
+            public CellData(int value, bool isTarget)
             {
-                RowTargets.Add(CellsData[i][0] + CellsData[i][1]);
-                ColumnTargets.Add(CellsData[0][i] + CellsData[1][i]);
+                Value = value;
+                IsTarget = isTarget;
             }
         }
     }

@@ -2,52 +2,28 @@ using System.Collections.Generic;
 using GridManagement;
 using LevelManagement;
 using UI;
-using UI.Popup;
 using UnityEngine;
-using Utilities;
 using Zenject;
 
 namespace Gameplay
 {
     public class GameplayManager : Manager
     {
-        private GridManager _gridManager;
-        private LevelManager _levelManager;
-        private PanelManager _panelManager;
-        private GameManager _gameManager;
-        private SignalManager _signalManager;
+        [Inject] private GridManager _gridManager;
+        [Inject] private LevelManager _levelManager;
+        [Inject] private PopupManager popupManager;
+        [Inject] private GameManager _gameManager;
+        [Inject] private SignalManager _signalManager;
+        [Inject] private HeartManager _heartManager;
         
-        private List<int> _rowTargetScores;
-        private List<int> _columnTargetScores;
-        
-        [Inject]
-        private void InstallDependencies(GridManager gridManager, LevelManager levelManager, PanelManager panelManager, GameManager gameManager, SignalManager signalManager)
-        {
-            _gridManager = gridManager;
-            _levelManager = levelManager;
-            _panelManager = panelManager;
-            _gameManager = gameManager;
-            _signalManager = signalManager;
-        }
+        public ClickMode ClickMode { get; private set; }
         
         public override void Initialize()
         {
             base.Initialize();
             
-            _rowTargetScores = new();
-            _columnTargetScores = new();
-            
-            for (var i = 0; i < _levelManager.CurrentLevelRowCount; i++)
-            {
-                _rowTargetScores.Add(_levelManager.GetRowTargetValue(i));
-            }
-            
-            for (var i = 0; i < _levelManager.CurrentLevelColumnCount; i++)
-            {
-                _columnTargetScores.Add(_levelManager.GetColumnTargetValue(i));
-            }
-            
             IsInitialized = true;
+            ClickMode = ClickMode.Select;
         }
         
         protected override void Register()
@@ -65,41 +41,65 @@ namespace Gameplay
             HandleLogic(cell);
         }
 
-        private void HandleLogic(Cell cell)
+        private async void HandleLogic(Cell cell)
         {
+            if (ClickMode == ClickMode.Select)
+            {
+                if (!cell.IsTarget)
+                {
+                    await _heartManager.LoseHeart();
+                }
+                else
+                {
+                    await cell.PlaceCircle();
+                }
+            }
+            else if (ClickMode == ClickMode.Erase)
+            {
+                if (cell.IsTarget)
+                {
+                    await _heartManager.LoseHeart();
+                }
+                else
+                {
+                    await cell.Erase();
+                }
+            }
+            
             if (CheckWin())
             { 
                 Win();
+            }
+            else if (CheckLose())
+            {
+                Lose();
             }
         }
 
         private void Win()
         {
-            _gameManager.SetGameState(GameState.Finished);
+            _gameManager.SetGameState(GameState.Won);
+            popupManager.Show(PopupType.WinPopup);
         }
         
-        private int CalculateRowScore(int row) => CalculateScoreHelper(_gridManager.GetRow(row));
-        
-        private int CalculateColumnScore(int column) => CalculateScoreHelper(_gridManager.GetColumn(column));
-        
-        private int CalculateScoreHelper(List<Cell> cells)
+        private void Lose()
         {
-            var value = 0;
-            foreach (var cell in cells)
-            {
-                if (cell.IsSelected)
-                {
-                    value += cell.Value;
-                }
-            }
-
-            return value;
+            _gameManager.SetGameState(GameState.Lost);
+            popupManager.Show(PopupType.LosePopup);
+        }
+        
+        private bool CheckIfLineIsCompleted(List<Cell> cells)
+        {
+            var selectedCellsCount = cells.FindAll(x => x.CellState == CellState.Selected).Count;
+            var erasedCellsCount = cells.FindAll(x => x.CellState == CellState.Erased).Count;
+            var targetCellsCount = cells.FindAll(x => x.IsTarget).Count;
+            return selectedCellsCount == targetCellsCount && cells.Count - selectedCellsCount == erasedCellsCount;
         }
 
-        public bool CheckIfRowIsCompleted(int row) => _rowTargetScores[row] == CalculateRowScore(row);
+        public bool CheckIfRowIsCompleted(int row) => CheckIfLineIsCompleted(_gridManager.GetRow(row));
         
-        public bool CheckIfColumnIsCompleted(int column) => _columnTargetScores[column] == CalculateColumnScore(column);
-
+        public bool CheckIfColumnIsCompleted(int column) => CheckIfLineIsCompleted(_gridManager.GetColumn(column));
+        
         private bool CheckWin()
         {
             for (var i = 0; i < _levelManager.CurrentLevelRowCount; i++)
@@ -120,16 +120,33 @@ namespace Gameplay
 
             return true;
         }
+
+        private bool CheckLose()
+        {
+            return !_heartManager.AreThereAnyActiveHeart;
+        }
         
         private void Update()
         {
-            if (GameManager.GameState != GameState.Finished && Input.GetKeyDown(KeyCode.A))
+            if (GameManager.GameState != GameState.Won && Input.GetKeyDown(KeyCode.A))
             {
-                _gameManager.SetGameState(GameState.Finished);
-                _panelManager.Show(PanelType.WinPopup);
-                _panelManager.Show(PanelType.WinPopup, false);
-                _panelManager.Show(PanelType.WinPopup, false);
+                _gameManager.SetGameState(GameState.Won);
+                popupManager.Show(PopupType.WinPopup);
+                popupManager.Show(PopupType.WinPopup, false);
+                popupManager.Show(PopupType.WinPopup, false);
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                if (ClickMode == ClickMode.Erase)
+                {
+                    ClickMode = ClickMode.Select;
+                }
+                else
+                {
+                    ClickMode = ClickMode.Erase;
+                }
+            }            
         }
     }
 }

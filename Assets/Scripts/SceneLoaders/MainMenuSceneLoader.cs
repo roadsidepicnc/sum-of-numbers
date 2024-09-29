@@ -2,24 +2,18 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Gameplay;
 using ObjectPoolingSystem;
+using UI;
 using UnityEngine;
 using Zenject;
 
 public class MainMenuSceneLoader : MonoBehaviour
 {
-    private ObjectPoolManager _objectPoolManager;
-    private GameManager _gameManager;
-    private SignalManager _signalManager;
+    [Inject] private ObjectPoolManager _objectPoolManager;
+    [Inject] private GameManager _gameManager;
+    [Inject] private SignalManager _signalManager;
+    [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     
     private List<Manager> _managers;
-
-    [Inject]
-    public void InstallDependencies(ObjectPoolManager objectPoolManager, SignalManager signalManager, GameManager gameManager)
-    {
-        _objectPoolManager = objectPoolManager;
-        _gameManager = gameManager;
-        _signalManager = signalManager;
-    }
     
     private void Awake()
     {
@@ -28,10 +22,11 @@ public class MainMenuSceneLoader : MonoBehaviour
 
     private async void Initialize()
     {
-        _objectPoolManager.Initialize();
-        await UniTask.WaitUntil(() => _objectPoolManager.IsInitialized);
+        _safeSpaceAdjuster.Initialize();
         
         _managers = new();
+        
+        _managers.Add(_objectPoolManager);
         
         foreach (var manager in _managers)
         {
@@ -39,11 +34,11 @@ public class MainMenuSceneLoader : MonoBehaviour
         }
         
         await UniTask.WaitUntil(AreAllManagersInitialized);
+        await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
         _gameManager.SetGameState(GameState.OnMenu);
         
         return;
-        
 
         bool AreAllManagersInitialized()
         {

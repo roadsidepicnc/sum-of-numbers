@@ -5,20 +5,20 @@ using UnityEngine;
 
 namespace CommandManagement
 {
-    public class PanelCommand : Command
+    public class PopupCommand : Command
     {
-        public Panel Panel;
+        public Popup Popup;
         
-        public PanelCommand(Panel panel, Func<UniTask> task = null) : base(Task)
+        public PopupCommand(Popup popup, Func<UniTask> task = null) : base(Task)
         {
-            Panel = panel;
-            panel.SetCommand(this);
+            Popup = popup;
+            popup.SetCommand(this);
         }
         
         public override async void Execute()
         {
             IsRunning = true;
-            if (Panel.Displayable)
+            if (Popup.Displayable)
             {
                 Debug.Log("Execute Command: " + ToString());
                 if (Task != null)
@@ -26,7 +26,7 @@ namespace CommandManagement
                     await Task();
                 }
                 
-                await Panel.Open();
+                await Popup.Open();
             }
             else
             {
@@ -37,7 +37,7 @@ namespace CommandManagement
         
         public override string ToString()
         {
-            return Panel.gameObject.name;
+            return Popup.gameObject.name;
         }
     }
 }

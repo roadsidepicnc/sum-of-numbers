@@ -37,29 +37,33 @@ namespace GridManagement
             
             IsInitialized = true;
         }
-
-        protected override void Register()
-        {
-            _signalManager.ResetGrid += ResetGrid;
-        }
-
-        protected override void Deregister()
-        {
-            _signalManager.ResetGrid -= ResetGrid;
-        }
-
-        private void ResetGrid()
-        {
-            foreach (var cell in _cellList)
-            {
-                cell.Reset();
-            }
-        }
         
         public Cell GetCell(int row, int column) => _cellList.Find(x => x.Row == row && x.Column == column);
         
         public List<Cell> GetRow(int row) => _cellList.FindAll(x => x.Row == row);
         
         public List<Cell> GetColumn(int column) => _cellList.FindAll(x => x.Column == column);
+
+        public int GetRowTarget(int row)
+        {
+            var count = 0;
+            foreach (var cell in GetRow(row))
+            {
+                count += cell.Value;
+            }
+
+            return count;
+        }
+        
+        public int GetColumnTarget(int column)
+        {
+            var count = 0;
+            foreach (var cell in GetColumn(column))
+            {
+                count += cell.Value;
+            }
+
+            return count;
+        }
     }
 }

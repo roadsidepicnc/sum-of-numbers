@@ -1,11 +1,12 @@
 using LevelManagement;
 using ObjectPoolingSystem;
+using UI;
 using UnityEngine;
 using Zenject;
 
 public class ProjectInstaller : MonoInstaller<ProjectInstaller>
 {
-    [SerializeField] private ObjectPoolManager objectPoolManager;
+    [SerializeField] private PopupPrefabCatalog popupPrefabCatalogPrefab;
     
     public override void InstallBindings()
     {
@@ -13,5 +14,6 @@ public class ProjectInstaller : MonoInstaller<ProjectInstaller>
         Container.BindInterfacesAndSelfTo<SignalManager>().FromNewComponentOnNewGameObject().AsSingle();
         Container.BindInterfacesAndSelfTo<LevelManager>().FromNewComponentOnNewGameObject().AsSingle();
         Container.BindInterfacesAndSelfTo<ObjectPoolContainer>().FromNewComponentOnNewGameObject().AsSingle();
+        Container.BindInterfacesAndSelfTo<PopupPrefabCatalog>().FromComponentInNewPrefab(popupPrefabCatalogPrefab).AsSingle();
     }
 }

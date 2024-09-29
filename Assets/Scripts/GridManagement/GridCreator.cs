@@ -10,8 +10,9 @@ namespace GridManagement
 {
     public class GridCreator : MonoBehaviour
     {
-        private ObjectPoolManager _objectPoolManager;
-        private LevelManager _levelManager;
+        [Inject] private ObjectPoolManager _objectPoolManager;
+        [Inject] private LevelManager _levelManager;
+        [Inject] private GridManager _gridManager;
 
         [SerializeField] private float boldLineThickness;
         [SerializeField] private float thinLineThickness;
@@ -20,13 +21,6 @@ namespace GridManagement
         [SerializeField] private GridLayoutGroup columnLinesParent;
         [SerializeField] private Transform rowTargetScoreTextsParent;
         [SerializeField] private Transform columnTargetScoreTextsParent;
-
-        [Inject]
-        private void InstallDependencies(ObjectPoolManager objectPoolManager, LevelManager levelManager)
-        {
-            _objectPoolManager = objectPoolManager;
-            _levelManager = levelManager;
-        }
         
         public void Create(int rowCount, int columnCount, List<Cell> cells, List<TargetScoreText> rowTargetScoreTexts, List<TargetScoreText> columnTargetScoreTexts)
         {
@@ -42,8 +36,8 @@ namespace GridManagement
             var cellSize = horizontalGridSize / rowCount; 
             PlaceLines(rowLinesParent, columnLinesParent, rowCount, columnCount, cellSize, horizontalGridSize);
             PlaceCells(cellsParent, rowCount, columnCount, cellSize, cells);
-            CreateRowTargetScoreTexts(rowCount, rowTargetScoreTexts, rowTargetScoreTextsParent, cellSize);
-            CreateColumnTargetScoreTexts(columnCount, columnTargetScoreTexts, columnTargetScoreTextsParent, cellSize);
+            CreateRowTargetScoreTexts(rowCount, rowTargetScoreTexts, rowTargetScoreTextsParent, cellSize * .9f);
+            CreateColumnTargetScoreTexts(columnCount, columnTargetScoreTexts, columnTargetScoreTextsParent, cellSize * .9f);
         }
 
         private void PlaceLines(GridLayoutGroup rowLinesParent, GridLayoutGroup columnLinesParent, int rowCount, int columnCount, float cellSize, float gridSize)
@@ -101,7 +95,8 @@ namespace GridManagement
                         return;
                     }
                     
-                    cell.Set("Cell (" + i + "," + j + ")", _levelManager.GetCellValue(i, j), i, j);
+                    var cellData = _levelManager.GetCellData(i, j);
+                    cell.Set("Cell (" + i + "," + j + ")", cellData.Value, i, j, CellState.NotSelected, cellData.IsTarget);
                     cells.Add(cell);
                 }
             }
@@ -113,7 +108,7 @@ namespace GridManagement
             {
                 var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
                 var targetScoreText = (poolObject as TargetScoreText);
-                targetScoreText?.Set(_levelManager.GetRowTargetValue(i), TargetScoreText.AlignmentType.Row, i, 100f, cellSize); 
+                targetScoreText?.Set(_gridManager.GetRowTarget(i), TargetScoreText.AlignmentType.Row, i, cellSize, cellSize); 
                 targetScoreTextList.Add(targetScoreText);
             }
         }
@@ -124,7 +119,7 @@ namespace GridManagement
             {
                 var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
                 var targetScoreText = poolObject as TargetScoreText;
-                targetScoreText?.Set(_levelManager.GetColumnTargetValue(i), TargetScoreText.AlignmentType.Column, i, cellSize, 100f);
+                targetScoreText?.Set(_gridManager.GetColumnTarget(i), TargetScoreText.AlignmentType.Column, i, cellSize, cellSize);
                 targetScoreTextList.Add(targetScoreText);
             }
         }

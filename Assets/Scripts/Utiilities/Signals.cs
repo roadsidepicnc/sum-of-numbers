@@ -17,6 +17,7 @@ public enum GameState
     Loading,
     OnGameplay,
     OnMenu,
-    Finished,
+    Won,
+    Lost,
     Paused
 }

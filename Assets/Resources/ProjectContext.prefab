@@ -74,4 +74,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 135c8d752b3d0a44e9e27f412aa53e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectPoolManager: {fileID: 7640281310705355622, guid: f20147c429caa564baec3e529828c0b9, type: 3}
+  popupPrefabCatalogPrefab: {fileID: 7898207467758123678, guid: 459c1601a3d8c8c498ac195d9fa43999, type: 3}

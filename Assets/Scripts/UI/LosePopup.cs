@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class WinPopup : Popup
+    public class LosePopup : Popup
     {
         [SerializeField] private Button confirmButton;
         [SerializeField] private Button homeButton;

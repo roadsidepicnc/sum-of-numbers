@@ -25,13 +25,11 @@ namespace UI
         private void Register()
         {
             _signalManager.CellInteracted += OnCellInteracted;
-            _signalManager.ResetGrid += OnResetGrid;
         }
 
         private void Deregister()
         {
             _signalManager.CellInteracted -= OnCellInteracted;
-            _signalManager.ResetGrid -= OnResetGrid;
         }
 
         public void Set(int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
@@ -40,6 +38,16 @@ namespace UI
             targetScoreText.text = value.ToString();
             _alignmentType = alignmentType;
             _alignmentIndex = alignmentIndex;
+
+            var isErased = alignmentType switch
+            {
+                AlignmentType.Row => _gameplayManager.CheckIfRowIsCompleted(_alignmentIndex),
+                AlignmentType.Column => _gameplayManager.CheckIfColumnIsCompleted(_alignmentIndex),
+                _ => false
+            };
+
+            canvasGroup.alpha = isErased ? 0f : 1f;
+            
             var rectTransform = GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(width, height);
 
@@ -47,14 +55,10 @@ namespace UI
             switch (alignmentType)
             {
                 case AlignmentType.Column:
-                    backgroundTransform.offsetMin = new Vector2(5f, 0f);
-                    backgroundTransform.offsetMax = new Vector2(-5f, 0f);
                     rectTransform.pivot = new Vector2(.5f, 1f);
                     rectTransform.localPosition = new Vector3(rectTransform.localPosition.x, 0f);
                     break;
                 case AlignmentType.Row:
-                    backgroundTransform.offsetMin = new Vector2(0f, 5f);
-                    backgroundTransform.offsetMax = new Vector2(0f, -5f);
                     rectTransform.pivot = new Vector2(0f, .5f);
                     rectTransform.localPosition = new Vector3(0f, rectTransform.localPosition.y);
                     break;
@@ -63,55 +67,31 @@ namespace UI
 
         public override void Reset(Transform parent)
         {
-            Deregister();
-            UpdateUI(false);
             base.Reset(parent);
+            Deregister();
+            canvasGroup.alpha = 1f;
         }
-
-        private void UpdateUI(bool isCompleted)
-        {
-            if (isCompleted)
-            {
-                Fade(Constants.TargetScoreColorChangeDuration, Constants.TargetScoreBackgroundCompletedColor, Constants.TargetScoreTextCompletedColor);
-            }
-            else
-            {
-                Fade(Constants.TargetScoreColorChangeDuration, Constants.TargetScoreBackgroundNotCompletedColor, Constants.TargetScoreTextNotCompletedColor);
-            }
-        }
-
+        
         private void OnCellInteracted(Cell cell)
         {
-            switch (_alignmentType)
+            var isCompleted = _alignmentType switch
             {
-                case AlignmentType.Row when cell.Row == _alignmentIndex:
-                {
-                    var x = _gameplayManager.CheckIfRowIsCompleted(cell.Row);
-                    UpdateUI(x);
-                    break;
-                }
-                case AlignmentType.Column when cell.Column == _alignmentIndex:
-                {
-                    var x = _gameplayManager.CheckIfColumnIsCompleted(cell.Column);
-                    UpdateUI(x);
-                    break;
-                }
+                AlignmentType.Row when cell.Row == _alignmentIndex => _gameplayManager.CheckIfRowIsCompleted(cell.Row),
+                AlignmentType.Column when cell.Column == _alignmentIndex => _gameplayManager.CheckIfColumnIsCompleted(cell.Column),
+                _ => false
+            };
+
+            if (isCompleted)
+            {
+                Fade();
             }
         }
 
-        private void Fade(float duration, Color backgroundTargetColor, Color textTargetColor)
+        private void Fade(float duration = .2f)
         {
-            background.DOComplete();
-            background.DOColor(backgroundTargetColor, duration);
-            targetScoreText.DOComplete();
-            targetScoreText.DOColor(textTargetColor, duration);
+            canvasGroup.DOFade(0f, duration).From(1f);
         }
-
-        private void OnResetGrid()
-        {
-            Fade(0f, Constants.TargetScoreBackgroundNotCompletedColor, Constants.TargetScoreTextNotCompletedColor);
-        }
-
+        
         public enum AlignmentType
         {
             Row,

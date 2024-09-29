@@ -66,8 +66,8 @@ namespace CommandManagement
         {
             switch (_current)
             {
-                case PanelCommand panelCommand:
-                    panelCommand.Panel.Close(ignoreCommand:ignoreCommand);
+                case PopupCommand panelCommand:
+                    panelCommand.Popup.Close(ignoreCommand:ignoreCommand);
                     break;
                 default:
                     _current.Complete();
