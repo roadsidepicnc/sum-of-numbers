@@ -7,7 +7,7 @@ namespace CommandManagement
 {
     public class PopupCommand : Command
     {
-        public Popup Popup;
+        public readonly Popup Popup;
         
         public PopupCommand(Popup popup, Func<UniTask> task = null) : base(Task)
         {

@@ -9,21 +9,16 @@ namespace GridManagement
 {
     public class GridManager : Manager
     {
+        [Inject] private GridCreator _gridCreator;
+        [Inject] private LevelManager _levelManager;
+        [Inject] private SignalManager _signalManager;
+        
         private List<Cell> _cellList;
         private List<TargetScoreText> _rowTargetScoreTexts;
         private List<TargetScoreText> _columnTargetScoreTexts;
-        
-        private GridCreator _gridCreator;
-        private LevelManager _levelManager;
-        private SignalManager _signalManager;
-        
-        [Inject]
-        private void InstallDependencies(GridCreator gridCreator, LevelManager levelManager, SignalManager signalManager)
-        {
-            _gridCreator = gridCreator;
-            _levelManager = levelManager;
-            _signalManager = signalManager;
-        }
+
+        private float _cellSize;
+        public float CellSize => _cellSize;
         
         public override void Initialize()
         {
@@ -33,7 +28,7 @@ namespace GridManagement
             _rowTargetScoreTexts = new();
             _columnTargetScoreTexts = new();
             
-            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList, _rowTargetScoreTexts, _columnTargetScoreTexts);
+            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList, ref _cellSize);
             
             IsInitialized = true;
         }

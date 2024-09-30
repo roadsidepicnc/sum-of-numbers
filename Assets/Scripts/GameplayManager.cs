@@ -15,6 +15,7 @@ namespace Gameplay
         [Inject] private GameManager _gameManager;
         [Inject] private SignalManager _signalManager;
         [Inject] private HeartManager _heartManager;
+        [Inject] private TargetScoreManager _targetScoreManager;
         
         public ClickMode ClickMode { get; private set; }
         
@@ -52,6 +53,15 @@ namespace Gameplay
                 else
                 {
                     await cell.PlaceCircle();
+                    
+                    if (CheckIfRowIsCompleted(cell.Row))
+                    {
+                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Row, cell.Row);
+                    }
+                    else if (CheckIfColumnIsCompleted(cell.Column))
+                    {
+                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Column, cell.Column);
+                    }
                 }
             }
             else if (ClickMode == ClickMode.Erase)
@@ -63,6 +73,15 @@ namespace Gameplay
                 else
                 {
                     await cell.Erase();
+                    
+                    if (CheckIfRowIsCompleted(cell.Row))
+                    {
+                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Row, cell.Row);
+                    }
+                    else if (CheckIfColumnIsCompleted(cell.Column))
+                    {
+                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Column, cell.Column);
+                    }
                 }
             }
             

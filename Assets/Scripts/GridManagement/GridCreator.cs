@@ -19,10 +19,8 @@ namespace GridManagement
         [SerializeField] private GridLayoutGroup cellsParent;
         [SerializeField] private GridLayoutGroup rowLinesParent;
         [SerializeField] private GridLayoutGroup columnLinesParent;
-        [SerializeField] private Transform rowTargetScoreTextsParent;
-        [SerializeField] private Transform columnTargetScoreTextsParent;
         
-        public void Create(int rowCount, int columnCount, List<Cell> cells, List<TargetScoreText> rowTargetScoreTexts, List<TargetScoreText> columnTargetScoreTexts)
+        public void Create(int rowCount, int columnCount, List<Cell> cells, ref float cellSize)
         {
             var horizontalGridSize = cellsParent.GetComponent<RectTransform>().rect.width;
             var verticalGridSize = cellsParent.GetComponent<RectTransform>().rect.height;
@@ -33,11 +31,9 @@ namespace GridManagement
                 return;
             }
 
-            var cellSize = horizontalGridSize / rowCount; 
+            cellSize = horizontalGridSize / rowCount; 
             PlaceLines(rowLinesParent, columnLinesParent, rowCount, columnCount, cellSize, horizontalGridSize);
             PlaceCells(cellsParent, rowCount, columnCount, cellSize, cells);
-            CreateRowTargetScoreTexts(rowCount, rowTargetScoreTexts, rowTargetScoreTextsParent, cellSize * .9f);
-            CreateColumnTargetScoreTexts(columnCount, columnTargetScoreTexts, columnTargetScoreTextsParent, cellSize * .9f);
         }
 
         private void PlaceLines(GridLayoutGroup rowLinesParent, GridLayoutGroup columnLinesParent, int rowCount, int columnCount, float cellSize, float gridSize)
@@ -99,28 +95,6 @@ namespace GridManagement
                     cell.Set("Cell (" + i + "," + j + ")", cellData.Value, i, j, CellState.NotSelected, cellData.IsTarget);
                     cells.Add(cell);
                 }
-            }
-        }
-        
-        private void CreateRowTargetScoreTexts(int count, List<TargetScoreText> targetScoreTextList, Transform parent, float cellSize)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
-                var targetScoreText = (poolObject as TargetScoreText);
-                targetScoreText?.Set(_gridManager.GetRowTarget(i), TargetScoreText.AlignmentType.Row, i, cellSize, cellSize); 
-                targetScoreTextList.Add(targetScoreText);
-            }
-        }
-
-        private void CreateColumnTargetScoreTexts(int count, List<TargetScoreText> targetScoreTextList, Transform parent, float cellSize)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
-                var targetScoreText = poolObject as TargetScoreText;
-                targetScoreText?.Set(_gridManager.GetColumnTarget(i), TargetScoreText.AlignmentType.Column, i, cellSize, cellSize);
-                targetScoreTextList.Add(targetScoreText);
             }
         }
     }

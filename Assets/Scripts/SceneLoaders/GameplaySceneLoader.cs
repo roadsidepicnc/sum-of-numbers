@@ -18,6 +18,7 @@ public class GameplaySceneLoader : MonoBehaviour
     [Inject] private GameplayManager _gameplayManager;
     [Inject] private GameManager _gameManager;
     [Inject] private HeartManager _heartManager;
+    [Inject] private TargetScoreManager _targetScoreManager;
     [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     
     private List<Manager> _managers;
@@ -41,6 +42,7 @@ public class GameplaySceneLoader : MonoBehaviour
         _managers.Add(_gridManager);
         _managers.Add(_gameplayManager);
         _managers.Add(_heartManager);
+        _managers.Add(_targetScoreManager);
         
         foreach (var manager in _managers)
         {

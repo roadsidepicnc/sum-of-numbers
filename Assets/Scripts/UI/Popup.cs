@@ -42,7 +42,7 @@ namespace UI
             content.DOKill();
             var duration = .3f;
             background.DOFade(180f / 255f, duration).From(0f);
-            await content.DOHitScale(callback, duration);
+            await content.DoHitScale(callback, duration);
             IsOpening = false;
         }
         

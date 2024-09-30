@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gameplay;
 using GridManagement;
@@ -14,38 +15,14 @@ namespace UI
         [SerializeField] private TextMeshProUGUI targetScoreText;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private Image background;
-
-        private AlignmentType _alignmentType;
-        private int _alignmentIndex;
         
         [Inject] private GameplayManager _gameplayManager;
         [Inject] private SignalManager _signalManager;
         
-        private void Register()
-        {
-            _signalManager.CellInteracted += OnCellInteracted;
-        }
-
-        private void Deregister()
-        {
-            _signalManager.CellInteracted -= OnCellInteracted;
-        }
-
         public void Set(int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
         {
-            Register();
             targetScoreText.text = value.ToString();
-            _alignmentType = alignmentType;
-            _alignmentIndex = alignmentIndex;
-
-            var isErased = alignmentType switch
-            {
-                AlignmentType.Row => _gameplayManager.CheckIfRowIsCompleted(_alignmentIndex),
-                AlignmentType.Column => _gameplayManager.CheckIfColumnIsCompleted(_alignmentIndex),
-                _ => false
-            };
-
-            canvasGroup.alpha = isErased ? 0f : 1f;
+            canvasGroup.alpha = 1f;
             
             var rectTransform = GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(width, height);
@@ -67,28 +44,17 @@ namespace UI
         public override void Reset(Transform parent)
         {
             base.Reset(parent);
-            Deregister();
             canvasGroup.alpha = 1f;
         }
         
-        private void OnCellInteracted(Cell cell)
+        private async UniTask Fade(float duration = .2f)
         {
-            var isCompleted = _alignmentType switch
-            {
-                AlignmentType.Row when cell.Row == _alignmentIndex => _gameplayManager.CheckIfRowIsCompleted(cell.Row),
-                AlignmentType.Column when cell.Column == _alignmentIndex => _gameplayManager.CheckIfColumnIsCompleted(cell.Column),
-                _ => false
-            };
-
-            if (isCompleted)
-            {
-                Fade();
-            }
+            await canvasGroup.DOFade(0f, duration).From(1f);
         }
 
-        private void Fade(float duration = .2f)
+        public async UniTask Complete()
         {
-            canvasGroup.DOFade(0f, duration).From(1f);
+            await Fade();
         }
         
         public enum AlignmentType
