@@ -11,7 +11,7 @@ namespace Gameplay
     {
         [Inject] private GridManager _gridManager;
         [Inject] private LevelManager _levelManager;
-        [Inject] private PopupManager popupManager;
+        [Inject] private PopupManager _popupManager;
         [Inject] private GameManager _gameManager;
         [Inject] private SignalManager _signalManager;
         [Inject] private HeartManager _heartManager;
@@ -79,13 +79,13 @@ namespace Gameplay
         private void Win()
         {
             _gameManager.SetGameState(GameState.Won);
-            popupManager.Show(PopupType.WinPopup);
+            _popupManager.Show(PopupType.WinPopup);
         }
         
         private void Lose()
         {
             _gameManager.SetGameState(GameState.Lost);
-            popupManager.Show(PopupType.LosePopup);
+            _popupManager.Show(PopupType.LosePopup);
         }
         
         private bool CheckIfLineIsCompleted(List<Cell> cells)
@@ -131,9 +131,9 @@ namespace Gameplay
             if (GameManager.GameState != GameState.Won && Input.GetKeyDown(KeyCode.A))
             {
                 _gameManager.SetGameState(GameState.Won);
-                popupManager.Show(PopupType.WinPopup);
-                popupManager.Show(PopupType.WinPopup, false);
-                popupManager.Show(PopupType.WinPopup, false);
+                _popupManager.Show(PopupType.WinPopup);
+                _popupManager.Show(PopupType.WinPopup, false);
+                _popupManager.Show(PopupType.WinPopup, false);
             }
 
             if (Input.GetKeyDown(KeyCode.R))

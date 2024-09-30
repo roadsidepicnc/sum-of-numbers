@@ -26,8 +26,7 @@ namespace UI
 
         private async UniTask Shake(float duration = .5f)
         {
-            transform.DOShakePosition(duration, 15f, randomness: 0f);
-            await UniTask.Delay((int) ((duration + .2f) * 1000));
+            await transform.DOShakePosition(duration, 15f, randomness: 0f);
             image.color = Color.white;
         }
 

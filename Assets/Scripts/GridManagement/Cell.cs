@@ -87,9 +87,11 @@ namespace GridManagement
             
             _circle = _objectPoolManager.GetObject(PoolObjectType.Circle, transform) as Circle;
             _circle?.Set(Color.black, _rectTransform.sizeDelta.x * CircleSizeMultiplier, _rectTransform.sizeDelta.y * CircleSizeMultiplier);
-            _circle?.PlayAnimation(.35f);
-            await UniTask.Delay((int)(.2f * 1000));
-            CellState = CellState.Selected;
+            if (_circle != null)
+            {
+                await _circle.PlayAnimation(.35f);
+                CellState = CellState.Selected;
+            }
         }
 
         private void RemoveCircle()
@@ -105,8 +107,7 @@ namespace GridManagement
 
         public async UniTask Erase(float duration = .2f)
         {
-            canvasGroup.DOFade(0f, duration).From(1f);
-            await UniTask.Delay((int) duration * 1000);
+            await canvasGroup.DOFade(0f, duration).From(1f);
             CellState = CellState.Erased;
         }
     }

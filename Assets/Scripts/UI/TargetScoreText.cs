@@ -5,7 +5,6 @@ using ObjectPoolingSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities;
 using Zenject;
 
 namespace UI

@@ -25,8 +25,7 @@ namespace UI
 
         public async UniTask PlayAnimation(float duration = .2f)
         {
-            transform.DOScale(Vector3.one, duration).From(Vector3.zero).SetEase(Ease.InOutBack);
-            await UniTask.Delay((int)(duration * 1000));
+            await transform.DOScale(Vector3.one, duration).From(Vector3.zero).SetEase(Ease.InOutBack);
         }
     }
 }

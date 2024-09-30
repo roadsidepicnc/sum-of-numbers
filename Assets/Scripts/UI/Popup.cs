@@ -9,7 +9,8 @@ namespace UI
 {
     public abstract class Popup : MonoBehaviour
     {
-        [SerializeField] protected RectTransform rectTransform;
+        [SerializeField] protected RectTransform content;
+        [SerializeField] protected Image background;
         [SerializeField] protected Button cancelButton;
         [SerializeField] protected PopupType popupType;
         
@@ -19,7 +20,7 @@ namespace UI
         
         protected bool IsOpening;
         
-        public bool IsActiveInHierarchy => rectTransform.gameObject.activeInHierarchy;
+        public bool IsActiveInHierarchy => gameObject.activeInHierarchy;
         
         public virtual bool Displayable => true;
         
@@ -31,23 +32,24 @@ namespace UI
         public virtual void Initialize()
         {
             gameObject.SetActive(false);
-            transform.localScale = Vector3.zero;
+            //transform.localScale = Vector3.zero;
         }
         
         public virtual async UniTask Open(Action callback = null)
         {
             IsOpening = true;
-            rectTransform.DOKill();
-            rectTransform.gameObject.SetActive(true);
+            gameObject.SetActive(true);
+            content.DOKill();
             var duration = .3f;
-            await rectTransform.DOHitScale(callback, duration);
+            background.DOFade(180f / 255f, duration).From(0f);
+            await content.DOHitScale(callback, duration);
             IsOpening = false;
         }
         
         public virtual async UniTaskVoid Close(Action callback = null, bool ignoreCommand = false)
         {
-            rectTransform.DOKill();
-            rectTransform.gameObject.SetActive(false);
+            content.DOKill();
+            content.gameObject.SetActive(false);
             _command?.Complete();
         }
     }
