@@ -30,16 +30,28 @@ namespace Gameplay
         protected override void Register()
         {
             _signalManager.CellInteracted += OnCellInteracted;
+            _signalManager.ClickModeChanged += OnClickModeChanged;
         }
 
         protected override void Deregister()
         {
             _signalManager.CellInteracted -= OnCellInteracted;
+            _signalManager.ClickModeChanged -= OnClickModeChanged;
         }
         
         private void OnCellInteracted(Cell cell)
         {
             HandleLogic(cell);
+        }
+
+        private void OnClickModeChanged()
+        {
+            ClickMode = ClickMode switch
+            {
+                ClickMode.Erase => ClickMode.Select,
+                ClickMode.Select => ClickMode.Erase,
+                _ => ClickMode
+            };
         }
 
         private async void HandleLogic(Cell cell)
@@ -53,15 +65,6 @@ namespace Gameplay
                 else
                 {
                     await cell.PlaceCircle();
-                    
-                    if (CheckIfRowIsCompleted(cell.Row))
-                    {
-                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Row, cell.Row);
-                    }
-                    else if (CheckIfColumnIsCompleted(cell.Column))
-                    {
-                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Column, cell.Column);
-                    }
                 }
             }
             else if (ClickMode == ClickMode.Erase)
@@ -73,17 +76,10 @@ namespace Gameplay
                 else
                 {
                     await cell.Erase();
-                    
-                    if (CheckIfRowIsCompleted(cell.Row))
-                    {
-                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Row, cell.Row);
-                    }
-                    else if (CheckIfColumnIsCompleted(cell.Column))
-                    {
-                        _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Column, cell.Column);
-                    }
                 }
             }
+            
+            TryToCompleteTargetScores(cell);
             
             if (CheckWin())
             { 
@@ -94,7 +90,23 @@ namespace Gameplay
                 Lose();
             }
         }
-
+        
+        private void TryToCompleteTargetScores(Cell cell)
+        {
+            var rowCompleted = CheckIfRowIsCompleted(cell.Row);
+            var columnCompleted = CheckIfColumnIsCompleted(cell.Column);
+            
+            if (rowCompleted)
+            {
+                _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Row, cell.Row);
+            }
+            
+            if (columnCompleted)
+            {
+                _targetScoreManager.CompleteTargetScore(TargetScoreText.AlignmentType.Column, cell.Column);
+            }
+        }
+        
         private void Win()
         {
             _gameManager.SetGameState(GameState.Won);

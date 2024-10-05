@@ -55,7 +55,8 @@ public class GameplaySceneController : MonoBehaviour
 
     private async void OnHomeButtonClick()
     {
-        _gameManager.SetGameState(GameState.Loading);
+        _gameManager.SetGameState(GameState.SceneChanging);
+        await UniTask.WaitUntil(() => GameManager.GameState == GameState.SceneFaded);
         _objectPoolManager.ResetPools();
         await SceneManager.LoadSceneAsync("MainMenu");
     }

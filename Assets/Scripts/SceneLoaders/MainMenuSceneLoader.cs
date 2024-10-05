@@ -22,6 +22,8 @@ public class MainMenuSceneLoader : MonoBehaviour
 
     private async void Initialize()
     {
+        _gameManager.SetGameState(GameState.SceneLoading);
+        
         _safeSpaceAdjuster.Initialize();
         
         _managers = new();
@@ -36,7 +38,7 @@ public class MainMenuSceneLoader : MonoBehaviour
         await UniTask.WaitUntil(AreAllManagersInitialized);
         await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
-        _gameManager.SetGameState(GameState.OnMenu);
+        _gameManager.SetGameState(GameState.SceneLoaded);
         
         return;
 

@@ -20,6 +20,10 @@ namespace GridManagement
         [SerializeField] private GridLayoutGroup rowLinesParent;
         [SerializeField] private GridLayoutGroup columnLinesParent;
         
+        [Header("Colors")]
+        [SerializeField] private Color boldLineColor;
+        [SerializeField] private Color thinLineColor;
+        
         public void Create(int rowCount, int columnCount, List<Cell> cells, ref float cellSize)
         {
             var horizontalGridSize = cellsParent.GetComponent<RectTransform>().rect.width;
@@ -47,7 +51,7 @@ namespace GridManagement
             {
                 var line = _objectPoolManager.GetObject(PoolObjectType.GridLine, rowLinesParent.transform);
                 var lineThickness = i == 0 || i == lineCount - 1  ? boldLineThickness : thinLineThickness;
-                var lineColor = i == 0 || i == lineCount - 1 ? Color.black : new Color(75f / 255f, 74f / 255f, 75f / 255f);
+                var lineColor = i == 0 || i == lineCount - 1 ? boldLineColor : thinLineColor;
                 (line as GridLine)?.Set(i == 0 || i == lineCount - 1 ? gridSize + lineThickness : gridSize - boldLineThickness, lineThickness, lineColor);
             }
 
@@ -59,7 +63,7 @@ namespace GridManagement
             {
                 var line = _objectPoolManager.GetObject(PoolObjectType.GridLine, columnLinesParent.transform);
                 var lineThickness = i == 0 || i == lineCount - 1  ? boldLineThickness : thinLineThickness;
-                var lineColor = i == 0 || i == lineCount - 1 ? Color.black : new Color(75f / 255f, 74f / 255f, 75f / 255f);
+                var lineColor = i == 0 || i == lineCount - 1 ? boldLineColor : thinLineColor;
                 (line as GridLine)?.Set(lineThickness, i == 0 || i == lineCount - 1 ? gridSize + lineThickness : gridSize - boldLineThickness, lineColor);
             }
         }

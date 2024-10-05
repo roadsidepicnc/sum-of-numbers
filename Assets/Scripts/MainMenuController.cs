@@ -85,7 +85,8 @@ public class MainMenuController : MonoBehaviour
 
     private async void OnPlayButtonClick()
     {
-        _gameManager.SetGameState(GameState.Loading);
+        _gameManager.SetGameState(GameState.SceneChanging);
+        await UniTask.WaitUntil(() => GameManager.GameState == GameState.SceneFaded);
         _objectPoolManager.ResetPools();
         await SceneManager.LoadSceneAsync("Gameplay");
     }

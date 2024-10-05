@@ -40,7 +40,7 @@ public class LoadingSceneLoader : MonoBehaviour
             manager.Initialize();
         }
         
-        _gameManager.SetGameState(GameState.Loading);
+        _gameManager.SetGameState(GameState.SceneLoading);
         await UniTask.WaitUntil(AreAllManagersInitialized);
         await SceneManager.LoadSceneAsync("MainMenu");
         

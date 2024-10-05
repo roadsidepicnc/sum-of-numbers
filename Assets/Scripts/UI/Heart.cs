@@ -12,8 +12,9 @@ namespace UI
         
         [SerializeField] private Image image;
         
-        public void Set(Color color, bool isActive)
+        public void Set(Sprite sprite, Color color, bool isActive)
         {
+            image.sprite = sprite;
             image.color = color;
             IsActive = isActive;
         }
@@ -27,10 +28,9 @@ namespace UI
         private async UniTask Shake(float duration = .5f)
         {
             await transform.DOShakePosition(duration, 15f, randomness: 0f);
-            image.color = Color.white;
         }
 
-        public async UniTask Lose()
+        public async UniTask PlayLoseAnimation()
         {
             if (!IsActive)
             {
@@ -38,7 +38,6 @@ namespace UI
             }
             
             await Shake();
-            IsActive = false;
         }
     }
 }

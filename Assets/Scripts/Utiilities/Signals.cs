@@ -14,7 +14,10 @@ namespace Utilities
 
 public enum GameState
 {
-    Loading,
+    SceneLoading,
+    SceneLoaded,
+    SceneChanging,
+    SceneFaded,
     OnGameplay,
     OnMenu,
     Won,

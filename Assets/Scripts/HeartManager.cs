@@ -4,6 +4,7 @@ using LevelManagement;
 using ObjectPoolingSystem;
 using UI;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Gameplay
@@ -14,6 +15,14 @@ namespace Gameplay
         [Inject] private ObjectPoolManager _objectPoolManager;
 
         [SerializeField] private Transform parent;
+        
+        [Header("Sprites")]
+        [SerializeField] private Sprite activeHeartSprite;
+        [SerializeField] private Sprite passiveHeartSprite;
+        
+        [Header("Colors")]
+        [SerializeField] private Color activeHeartColor;
+        [SerializeField] private Color passiveHeartColor;
 
         private List<Heart> _hearts;
 
@@ -39,7 +48,7 @@ namespace Gameplay
             for (var i = 0; i < count; i++)
             {
                 var heart = _objectPoolManager.GetObject(PoolObjectType.Heart, parent) as Heart;
-                heart?.Set(Color.red, true);
+                heart?.Set(activeHeartSprite, activeHeartColor, true);
                 _hearts.Add(heart);
             }
         }
@@ -55,7 +64,9 @@ namespace Gameplay
             {
                 if (_hearts[i].IsActive)
                 {
-                    await _hearts[i].Lose();
+                    var heart = _hearts[i];
+                    await heart.PlayLoseAnimation();
+                    heart.Set(passiveHeartSprite, passiveHeartColor, false);
                     break;
                 }
             }
