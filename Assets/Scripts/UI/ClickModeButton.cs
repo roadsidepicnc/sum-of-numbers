@@ -3,14 +3,15 @@ using DG.Tweening;
 using Gameplay;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Signals;
 using Zenject;
 
 namespace UI
 {
     public class ClickModeButton : MonoBehaviour
     {
+        [Inject] private SignalBus _signalBus;
         [Inject] private GameplayManager _gameplayManager;
-        [Inject] private SignalManager _signalManager;
 
         [Header("Targets")]
         [SerializeField] private Transform eraserTarget;
@@ -43,7 +44,7 @@ namespace UI
         
         private void OnClick()
         {
-            _signalManager.ClickModeChanged?.Invoke();
+            _signalBus.Fire<ClickModeChangedSignal>();
             var clickMode = _gameplayManager.ClickMode;
             
             switch (clickMode)

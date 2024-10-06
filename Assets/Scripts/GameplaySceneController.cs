@@ -5,12 +5,14 @@ using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
+using Utilities.Signals;
 using Zenject;
 
 public class GameplaySceneController : MonoBehaviour
 {
+    [Inject] private SignalBus _signalBus;
     [Inject] private LevelManager _levelManager;
-    [Inject] private SignalManager _signalManager;
     [Inject] private GameManager _gameManager;
     [Inject] private ObjectPoolManager _objectPoolManager;
     
@@ -34,12 +36,12 @@ public class GameplaySceneController : MonoBehaviour
 
     private void Register()
     {
-        _signalManager.GameStateChanged += OnGameStateChanged;
+        _signalBus.Subscribe<GameStateChangedSignal>(OnGameStateChanged);
     }
 
     private void Deregister()
     {
-        _signalManager.GameStateChanged -= OnGameStateChanged;
+        _signalBus.Unsubscribe<GameStateChangedSignal>(OnGameStateChanged);
     }
     
     private void Initialize()
@@ -61,7 +63,7 @@ public class GameplaySceneController : MonoBehaviour
         await SceneManager.LoadSceneAsync("MainMenu");
     }
     
-    private void OnGameStateChanged(GameState gameState)
+    private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
     {
     }
 }

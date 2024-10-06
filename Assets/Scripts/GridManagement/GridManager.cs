@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Gameplay;
 using LevelManagement;
 using UI;
-using Utilities;
 using Zenject;
 
 namespace GridManagement
@@ -11,7 +10,6 @@ namespace GridManagement
     {
         [Inject] private GridCreator _gridCreator;
         [Inject] private LevelManager _levelManager;
-        [Inject] private SignalManager _signalManager;
         
         private List<Cell> _cellList;
         private List<TargetScoreText> _rowTargetScoreTexts;

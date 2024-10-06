@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Utilities;
 
 namespace Gameplay
 {
-    public abstract class Manager : MonoBehaviour
+    public abstract class Manager : MonoBehaviour, ISubscribable
     {
         public bool IsInitialized { get; protected set; }
 
@@ -12,14 +13,14 @@ namespace Gameplay
         
         private void OnDestroy()
         {
-            Deregister();
+            Unsubscribe();
         }
 
         public virtual async void Initialize()
         {
             SetInitializeDependencies();
             await UniTask.WaitUntil(AreAllDependenciesProvided);
-            Register();
+            Subscribe();
         }
 
         protected virtual void SetInitializeDependencies()
@@ -39,11 +40,11 @@ namespace Gameplay
             return true;
         }
         
-        protected virtual void Register()
+        public virtual void Subscribe()
         {
         }
 
-        protected virtual void Deregister()
+        public virtual void Unsubscribe()
         {
         }
     }

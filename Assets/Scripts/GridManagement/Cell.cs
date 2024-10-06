@@ -1,12 +1,12 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Gameplay;
 using ObjectPoolingSystem;
 using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Signals;
 using Zenject;
 
 namespace GridManagement
@@ -14,7 +14,7 @@ namespace GridManagement
     public class Cell : PoolObject
     {
         [Inject] private ObjectPoolManager _objectPoolManager;
-        [Inject] private SignalManager _signalManager;
+        [Inject] private SignalBus _signalBus;
         
         [Header("UI Components")]
         [SerializeField] private Button button;
@@ -64,7 +64,7 @@ namespace GridManagement
                 return;
             }
 
-            _signalManager.CellInteracted?.Invoke(this);
+            _signalBus.Fire(new CellInteractedSignal(this));
         }
         
         public override void Reset(Transform parent)

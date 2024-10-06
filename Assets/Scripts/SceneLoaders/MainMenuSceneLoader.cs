@@ -10,7 +10,6 @@ public class MainMenuSceneLoader : MonoBehaviour
 {
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private GameManager _gameManager;
-    [Inject] private SignalManager _signalManager;
     [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     
     private List<Manager> _managers;

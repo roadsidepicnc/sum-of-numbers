@@ -1,9 +1,10 @@
 using Gameplay;
+using Utilities.Signals;
 using Zenject;
 
 public class GameManager : Manager
 {
-    [Inject] private SignalManager _signalManager;
+    [Inject] private SignalBus _signalBus;
     
     public static GameState GameState { get; private set; }
     
@@ -20,6 +21,6 @@ public class GameManager : Manager
     public void SetGameState(GameState gameState)
     {
         GameState = gameState;
-        _signalManager.GameStateChanged?.Invoke(gameState);
+        _signalBus.Fire(new GameStateChangedSignal(gameState));
     }
 }

@@ -5,10 +5,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
+using Utilities.Signals;
 using Zenject;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : MonoBehaviour, ISubscribable
 {
+    [Inject] private SignalBus _signalBus;
+    [Inject] private LevelManager _levelManager;
+    [Inject] private GameManager _gameManager;
+    [Inject] private ObjectPoolManager _objectPoolManager;
+    
     [Header("Panels")]
     [SerializeField] private RectTransform topPanel;
     
@@ -21,29 +28,15 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI levelNumberText;
     
     [SerializeField] private GameObject content;
-
-    private LevelManager _levelManager;
-    private SignalManager _signalManager;
-    private GameManager _gameManager;
-    private ObjectPoolManager _objectPoolManager;
-    
-    [Inject]
-    private void InstallDependencies(GameManager gameManager, LevelManager levelManager, SignalManager signalManager, ObjectPoolManager objectPoolManager)
-    {
-        _gameManager = gameManager;
-        _levelManager = levelManager;
-        _signalManager = signalManager;
-        _objectPoolManager = objectPoolManager;
-    }
     
     private void OnEnable()
     {
-        Register();
+        Subscribe();
     }
 
     private void OnDisable()
     {
-        Deregister();   
+        Unsubscribe();   
     }
 
     private void Start()
@@ -51,14 +44,14 @@ public class MainMenuController : MonoBehaviour
         Initialize();
     }
 
-    private void Register()
+    public void Subscribe()
     {
-        _signalManager.GameStateChanged += OnGameStateChanged;
+        _signalBus.Subscribe<GameStateChangedSignal>(OnGameStateChanged);
     }
 
-    private void Deregister()
+    public void Unsubscribe()
     {
-        _signalManager.GameStateChanged -= OnGameStateChanged;
+        _signalBus.Unsubscribe<GameStateChangedSignal>(OnGameStateChanged);
     }
     
     private void Initialize()
@@ -101,7 +94,7 @@ public class MainMenuController : MonoBehaviour
         
     }
     
-    private void OnGameStateChanged(GameState gameState)
+    private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
     {
     }
 }

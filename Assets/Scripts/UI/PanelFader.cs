@@ -1,14 +1,16 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using Utilities;
+using Utilities.Signals;
 using Zenject;
 
 namespace UI
 {
-    public class PanelFader : MonoBehaviour
+    public class PanelFader : MonoBehaviour, ISubscribable
     {
         [Inject] private GameManager _gameManager;
-        [Inject] private SignalManager _signalManager;
+        [Inject] private SignalBus _signalBus;
 
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private GameState targetSceneGameState;
@@ -19,12 +21,22 @@ namespace UI
 
         private void OnEnable()
         {
-            _signalManager.GameStateChanged += OnGameStateChanged;
+            Subscribe();
         }
 
         private void OnDisable()
         {
-            _signalManager.GameStateChanged -= OnGameStateChanged;
+            Unsubscribe();
+        }
+
+        public void Subscribe()
+        {
+            _signalBus.Subscribe<GameStateChangedSignal>(OnGameStateChanged);
+        }
+        
+        public void Unsubscribe()
+        {
+            _signalBus.Unsubscribe<GameStateChangedSignal>(OnGameStateChanged);
         }
 
         private void Awake()
@@ -32,9 +44,9 @@ namespace UI
             canvasGroup.alpha = 0f;
         }
 
-        private async void OnGameStateChanged(GameState gameState)
+        private async void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
         {
-            switch (gameState)
+            switch (gameStateChangedSignal.GameState)
             {
                 case GameState.SceneLoaded:
                     await PlayFadeInAnimation(fadeInDuration);

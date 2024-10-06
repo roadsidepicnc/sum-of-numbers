@@ -13,7 +13,6 @@ public class GameplaySceneLoader : MonoBehaviour
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private LevelManager _levelManager;
     [Inject] private PopupManager popupManager;
-    [Inject] private SignalManager _signalManager;
     [Inject] private GridManager _gridManager;
     [Inject] private GameplayManager _gameplayManager;
     [Inject] private GameManager _gameManager;
@@ -36,7 +35,6 @@ public class GameplaySceneLoader : MonoBehaviour
         
         _managers = new();
         
-        _managers.Add(_signalManager);
         _managers.Add(_objectPoolManager);
         _managers.Add(_gameManager);
         _managers.Add(_levelManager);

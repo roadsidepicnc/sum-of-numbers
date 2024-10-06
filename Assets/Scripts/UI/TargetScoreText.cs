@@ -1,7 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gameplay;
-using GridManagement;
 using ObjectPoolingSystem;
 using TMPro;
 using UnityEngine;
@@ -17,7 +16,6 @@ namespace UI
         [SerializeField] private Image background;
         
         [Inject] private GameplayManager _gameplayManager;
-        [Inject] private SignalManager _signalManager;
         
         public void Set(int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
         {

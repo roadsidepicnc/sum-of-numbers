@@ -3,17 +3,18 @@ using GridManagement;
 using LevelManagement;
 using UI;
 using UnityEngine;
+using Utilities.Signals;
 using Zenject;
 
 namespace Gameplay
 {
     public class GameplayManager : Manager
     {
+        [Inject] private SignalBus _signalBus;
         [Inject] private GridManager _gridManager;
         [Inject] private LevelManager _levelManager;
         [Inject] private PopupManager _popupManager;
         [Inject] private GameManager _gameManager;
-        [Inject] private SignalManager _signalManager;
         [Inject] private HeartManager _heartManager;
         [Inject] private TargetScoreManager _targetScoreManager;
         
@@ -27,21 +28,21 @@ namespace Gameplay
             ClickMode = ClickMode.Select;
         }
         
-        protected override void Register()
+        public override void Subscribe()
         {
-            _signalManager.CellInteracted += OnCellInteracted;
-            _signalManager.ClickModeChanged += OnClickModeChanged;
+            _signalBus.Subscribe<CellInteractedSignal>(OnCellInteracted);
+            _signalBus.Subscribe<ClickModeChangedSignal>(OnClickModeChanged);
         }
 
-        protected override void Deregister()
+        public override void Unsubscribe()
         {
-            _signalManager.CellInteracted -= OnCellInteracted;
-            _signalManager.ClickModeChanged -= OnClickModeChanged;
+            _signalBus.Unsubscribe<CellInteractedSignal>(OnCellInteracted);
+            _signalBus.Unsubscribe<ClickModeChangedSignal>(OnClickModeChanged);
         }
         
-        private void OnCellInteracted(Cell cell)
+        private void OnCellInteracted(CellInteractedSignal signal)
         {
-            HandleLogic(cell);
+            HandleLogic(signal.Cell);
         }
 
         private void OnClickModeChanged()
