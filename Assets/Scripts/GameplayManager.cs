@@ -110,6 +110,7 @@ namespace Gameplay
         
         private void Win()
         {
+            _levelManager.IncreaseLevelId();
             _gameManager.SetGameState(GameState.Won);
             _popupManager.Show(PopupType.WinPopup);
         }

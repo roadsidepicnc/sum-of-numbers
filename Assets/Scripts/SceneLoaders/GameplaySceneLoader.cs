@@ -12,7 +12,7 @@ public class GameplaySceneLoader : MonoBehaviour
 {
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private LevelManager _levelManager;
-    [Inject] private PopupManager popupManager;
+    [Inject] private PopupManager _popupManager;
     [Inject] private GridManager _gridManager;
     [Inject] private GameplayManager _gameplayManager;
     [Inject] private GameManager _gameManager;
@@ -22,7 +22,7 @@ public class GameplaySceneLoader : MonoBehaviour
     
     private List<Manager> _managers;
     
-    private void Awake()
+    private void Start()
     {
         Initialize();
     }
@@ -38,7 +38,7 @@ public class GameplaySceneLoader : MonoBehaviour
         _managers.Add(_objectPoolManager);
         _managers.Add(_gameManager);
         _managers.Add(_levelManager);
-        _managers.Add(popupManager);
+        _managers.Add(_popupManager);
         _managers.Add(_gridManager);
         _managers.Add(_gameplayManager);
         _managers.Add(_heartManager);

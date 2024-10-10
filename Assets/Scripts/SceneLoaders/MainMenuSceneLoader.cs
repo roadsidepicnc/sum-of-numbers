@@ -10,11 +10,12 @@ public class MainMenuSceneLoader : MonoBehaviour
 {
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private GameManager _gameManager;
+    [Inject] private PopupManager _popupManager;
     [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     
     private List<Manager> _managers;
     
-    private void Awake()
+    private void Start()
     {
         Initialize();
     }
@@ -28,6 +29,7 @@ public class MainMenuSceneLoader : MonoBehaviour
         _managers = new();
         
         _managers.Add(_objectPoolManager);
+        _managers.Add(_popupManager);
         
         foreach (var manager in _managers)
         {

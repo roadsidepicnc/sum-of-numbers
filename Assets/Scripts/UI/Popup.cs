@@ -12,6 +12,7 @@ namespace UI
         [SerializeField] protected RectTransform content;
         [SerializeField] protected Image background;
         [SerializeField] protected Button cancelButton;
+        [SerializeField] protected CanvasGroup canvasGroup;
         [SerializeField] protected PopupType popupType;
         
         private PopupCommand _command;
@@ -48,8 +49,10 @@ namespace UI
         
         public virtual async UniTaskVoid Close(Action callback = null, bool ignoreCommand = false)
         {
-            content.DOKill();
-            content.gameObject.SetActive(false);
+            canvasGroup.transform.DOKill();
+            content.DOScale(Vector3.zero, .25f);
+            await background.DOFade(0f, .4f);
+            gameObject.SetActive(false);
             _command?.Complete();
         }
     }

@@ -1,6 +1,6 @@
 namespace Utilities.Signals
 {
-    public class ClickModeChangedSignal
+    public struct ClickModeChangedSignal
     {
     }
 }

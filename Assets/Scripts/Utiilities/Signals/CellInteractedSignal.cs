@@ -2,7 +2,7 @@ using GridManagement;
 
 namespace Utilities.Signals
 {
-   public class CellInteractedSignal
+   public struct CellInteractedSignal
    {
       public Cell Cell { get; private set; }
 

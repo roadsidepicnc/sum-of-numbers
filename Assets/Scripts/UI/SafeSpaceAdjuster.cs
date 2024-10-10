@@ -17,7 +17,7 @@ namespace UI
         {
             CanvasHeight = canvas.GetComponent<RectTransform>().sizeDelta.y;
             CanvasWidth = canvas.GetComponent<RectTransform>().sizeDelta.x;
-            UnitSize = canvas.referencePixelsPerUnit * ( CanvasHeight / Constants.DefaultScreenHeight);
+            UnitSize = canvas.referencePixelsPerUnit * (CanvasHeight / Constants.DefaultScreenHeight);
             
             topPanel.anchoredPosition += Vector2.down * ScreenSafeAreaTopDifferenceInPixels() / 2;
 

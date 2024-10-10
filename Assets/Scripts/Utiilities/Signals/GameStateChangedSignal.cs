@@ -1,6 +1,6 @@
 namespace Utilities.Signals
 {
-    public class GameStateChangedSignal
+    public struct GameStateChangedSignal
     {
         public GameState GameState { get; private set; }
 

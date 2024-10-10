@@ -47,3 +47,4 @@ MonoBehaviour:
   popupPrefabs:
   - {fileID: 339453322965560739, guid: 598cb8a5f0bee0647a813f6f319cffdb, type: 3}
   - {fileID: 3610769755448094020, guid: b1578d9ec8541fe4896ba391d5b6d2c7, type: 3}
+  - {fileID: 217897049060940481, guid: bbafa7a6477dd99449f2edffad0c76ab, type: 3}

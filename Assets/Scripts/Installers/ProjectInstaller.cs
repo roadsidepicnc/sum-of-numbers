@@ -12,7 +12,7 @@ public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     public override void InstallBindings()
     {
         SignalBusInstaller.Install(Container);
-        Container.DeclareSignal<GameStateChangedSignal>();
+        Container.DeclareSignal<GameStateChangedSignal>().OptionalSubscriber();
         Container.DeclareSignal<CellInteractedSignal>();
         Container.DeclareSignal<ClickModeChangedSignal>();
         

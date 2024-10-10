@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using LevelManagement;
 using ObjectPoolingSystem;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class MainMenuController : MonoBehaviour, ISubscribable
     [Inject] private LevelManager _levelManager;
     [Inject] private GameManager _gameManager;
     [Inject] private ObjectPoolManager _objectPoolManager;
+    [Inject] private PopupManager _popupManager;
     
     [Header("Panels")]
     [SerializeField] private RectTransform topPanel;
@@ -62,7 +64,7 @@ public class MainMenuController : MonoBehaviour, ISubscribable
 
     private void SetTexts()
     {
-        levelNumberText.text = "Level " + (_levelManager.CurrentLevelId + 1);
+        levelNumberText.text = "Level " + _levelManager.LevelNumber;
     }
 
     private void SetButtons()
@@ -86,7 +88,7 @@ public class MainMenuController : MonoBehaviour, ISubscribable
 
     private void OnSettingsButtonClick()
     {
-        
+        _popupManager.Show(PopupType.SettingsPopup);
     }
     
     private void OnAchievementsButtonClick()
