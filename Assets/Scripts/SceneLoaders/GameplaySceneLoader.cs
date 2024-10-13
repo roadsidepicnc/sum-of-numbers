@@ -29,7 +29,7 @@ public class GameplaySceneLoader : MonoBehaviour
 
     private async void Initialize()
     {
-        _gameManager.SetGameState(GameState.SceneLoading);
+        _gameManager.SetGameState(GameState.ManagersAreInitializing);
         
         _safeSpaceAdjuster.Initialize();
         
@@ -52,7 +52,7 @@ public class GameplaySceneLoader : MonoBehaviour
         await UniTask.WaitUntil(AreAllManagersInitialized);
         await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
-        _gameManager.SetGameState(GameState.SceneLoaded);
+        _gameManager.SetGameState(GameState.ManagersAreInitialized);
         
         return;
 

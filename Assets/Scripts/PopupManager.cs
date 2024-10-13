@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CommandManagement;
 using Gameplay;
 using UnityEngine;
+using Utilities.Signals;
 using Zenject;
 
 namespace UI
@@ -9,6 +10,8 @@ namespace UI
     public class PopupManager : Manager
     {
         [Inject] private PopupPrefabCatalog popupPrefabCatalog;
+        [Inject] private DiContainer _diContainer;
+        [Inject] private SignalBus _signalBus;
         
         [SerializeField] private Transform parent;
         
@@ -21,6 +24,17 @@ namespace UI
             _instantiatedPopups = new();
 
             IsInitialized = true;
+        }
+        
+        public override void Subscribe()
+        {
+            _signalBus.Subscribe<GameStateChangedSignal>(OnGameStateChanged);
+
+        }
+
+        public override void Unsubscribe()
+        {
+            _signalBus.Unsubscribe<GameStateChangedSignal>(OnGameStateChanged);
         }
 
         public void Show(PopupType popupType, bool interrupt = true, bool prepend = false)
@@ -41,11 +55,20 @@ namespace UI
                 }
 
                 popup = Instantiate(prefab, parent);
+                _diContainer.InjectGameObject(popup.gameObject);
                 popup.Initialize();
                 _instantiatedPopups.Add(popupType, popup);
             }
             
             CommandManager.PushCommandInMainQueue(new PopupCommand(popup), interrupt, prepend);
+        }
+
+        private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
+        {
+            if (gameStateChangedSignal.GameState == GameState.SceneIsChanged)
+            {
+                CommandManager.ClearAllCommands();
+            }
         }
     }
 }

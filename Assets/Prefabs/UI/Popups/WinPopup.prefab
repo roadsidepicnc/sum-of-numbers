@@ -55,7 +55,7 @@ MonoBehaviour:
   background: {fileID: 5780231940954998949}
   cancelButton: {fileID: 0}
   popupType: 0
-  confirmButton: {fileID: 5339073735779635909}
+  nextLevelButton: {fileID: 5339073735779635909}
   homeButton: {fileID: 4900334901117514959}
 --- !u!1 &758454274849020744
 GameObject:
@@ -1065,7 +1065,7 @@ GameObject:
   - component: {fileID: 68063069227854820}
   - component: {fileID: 5339073735779635909}
   m_Layer: 5
-  m_Name: ConfirmButton
+  m_Name: NextLevelButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

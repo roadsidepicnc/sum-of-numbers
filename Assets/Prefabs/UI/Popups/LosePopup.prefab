@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 339453322710840200}
   - component: {fileID: 339453322710840199}
   m_Layer: 5
-  m_Name: ConfirmButton
+  m_Name: RestartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,7 +299,7 @@ MonoBehaviour:
   background: {fileID: 8815439903910631339}
   cancelButton: {fileID: 0}
   popupType: 1
-  confirmButton: {fileID: 339453322710840199}
+  restartButton: {fileID: 339453322710840199}
   homeButton: {fileID: 339453322469463091}
 --- !u!1 &339453323817053672
 GameObject:
@@ -417,7 +417,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Get More Lives
+  m_text: Restart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart
+  m_text: Home
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

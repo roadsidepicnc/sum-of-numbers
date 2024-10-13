@@ -10,7 +10,7 @@ using Utilities;
 using Utilities.Signals;
 using Zenject;
 
-public class MainMenuController : MonoBehaviour, ISubscribable
+public class MainMenuSceneController : MonoBehaviour, ISubscribable
 {
     [Inject] private SignalBus _signalBus;
     [Inject] private LevelManager _levelManager;
@@ -78,12 +78,9 @@ public class MainMenuController : MonoBehaviour, ISubscribable
         achievementsButton.onClick.AddListener(OnAchievementsButtonClick);
     }
 
-    private async void OnPlayButtonClick()
+    private void OnPlayButtonClick()
     {
-        _gameManager.SetGameState(GameState.SceneChanging);
-        await UniTask.WaitUntil(() => GameManager.GameState == GameState.SceneFaded);
-        _objectPoolManager.ResetPools();
-        await SceneManager.LoadSceneAsync("Gameplay");
+        _gameManager.SetGameState(GameState.SceneIsChanging);
     }
 
     private void OnSettingsButtonClick()
@@ -96,7 +93,12 @@ public class MainMenuController : MonoBehaviour, ISubscribable
         
     }
     
-    private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
+    private async void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
     {
+        if (gameStateChangedSignal.GameState == GameState.SceneIsChanged)
+        {
+            _objectPoolManager.ResetPools();
+            await SceneManager.LoadSceneAsync("Gameplay");
+        }
     }
 }

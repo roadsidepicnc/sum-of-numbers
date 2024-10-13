@@ -25,13 +25,17 @@ public class LoadingSceneLoader : MonoBehaviour
         _managers.Add(_gameManager);
         _managers.Add(_levelManager);
         
+        _gameManager.SetGameState(GameState.ManagersAreInitializing);
+        
         foreach (var manager in _managers)
         {
             manager.Initialize();
         }
         
-        _gameManager.SetGameState(GameState.SceneLoading);
         await UniTask.WaitUntil(AreAllManagersInitialized);
+        
+        _gameManager.SetGameState(GameState.ManagersAreInitialized);
+        
         await SceneManager.LoadSceneAsync("MainMenu");
         
         return;

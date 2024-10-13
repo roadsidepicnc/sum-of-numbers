@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
@@ -12,7 +13,6 @@ namespace UI
         [SerializeField] protected RectTransform content;
         [SerializeField] protected Image background;
         [SerializeField] protected Button cancelButton;
-        [SerializeField] protected CanvasGroup canvasGroup;
         [SerializeField] protected PopupType popupType;
         
         private PopupCommand _command;
@@ -47,10 +47,11 @@ namespace UI
             IsOpening = false;
         }
         
-        public virtual async UniTaskVoid Close(Action callback = null, bool ignoreCommand = false)
+        public virtual async UniTask Close(Action callback = null, bool ignoreCommand = false)
         {
-            canvasGroup.transform.DOKill();
+            content.DOKill();
             content.DOScale(Vector3.zero, .25f);
+            background.DOKill();
             await background.DOFade(0f, .4f);
             gameObject.SetActive(false);
             _command?.Complete();

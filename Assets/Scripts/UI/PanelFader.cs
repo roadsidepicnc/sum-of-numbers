@@ -48,13 +48,13 @@ namespace UI
         {
             switch (gameStateChangedSignal.GameState)
             {
-                case GameState.SceneLoaded:
+                case GameState.ManagersAreInitialized:
                     await PlayFadeInAnimation(fadeInDuration);
                     _gameManager.SetGameState(targetSceneGameState);
                     break;
-                case GameState.SceneChanging:
+                case GameState.SceneIsChanging:
                     await PlayFadeOutAnimation(fadeOutDuration);
-                    _gameManager.SetGameState(GameState.SceneFaded);
+                    _gameManager.SetGameState(GameState.SceneIsChanged);
                     break;
             }
         }

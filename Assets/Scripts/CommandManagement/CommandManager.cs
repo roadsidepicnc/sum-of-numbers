@@ -93,5 +93,11 @@ namespace CommandManagement
                 
             Next();
         }
+
+        public static void ClearAllCommands()
+        {
+            MainQueue.Clear();
+            RemoveCommand();
+        }
     }
 }

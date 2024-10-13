@@ -165,8 +165,6 @@ namespace Gameplay
             {
                 _gameManager.SetGameState(GameState.Won);
                 _popupManager.Show(PopupType.WinPopup);
-                _popupManager.Show(PopupType.WinPopup, false);
-                _popupManager.Show(PopupType.WinPopup, false);
             }
 
             if (Input.GetKeyDown(KeyCode.R))

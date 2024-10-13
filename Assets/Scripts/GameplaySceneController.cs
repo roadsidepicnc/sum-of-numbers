@@ -60,12 +60,9 @@ public class GameplaySceneController : MonoBehaviour, ISubscribable
         levelNumberText.text = "Level " + _levelManager.LevelNumber;
     }
 
-    private async void OnHomeButtonClick()
+    private void OnHomeButtonClick()
     {
-        _gameManager.SetGameState(GameState.SceneChanging);
-        await UniTask.WaitUntil(() => GameManager.GameState == GameState.SceneFaded);
-        _objectPoolManager.ResetPools();
-        await SceneManager.LoadSceneAsync("MainMenu");
+        _gameManager.SetGameState(GameState.SceneIsChanging);
     }
     
     private void OnSettingsButtonClick()
@@ -73,8 +70,13 @@ public class GameplaySceneController : MonoBehaviour, ISubscribable
         _popupManager.Show(PopupType.SettingsPopup);
     }
     
-    private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
+    private async void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
     {
+        if (gameStateChangedSignal.GameState == GameState.SceneIsChanged)
+        {
+            _objectPoolManager.ResetPools();
+            await SceneManager.LoadSceneAsync("MainMenu");
+        }
     }
 
     public void Subscribe()

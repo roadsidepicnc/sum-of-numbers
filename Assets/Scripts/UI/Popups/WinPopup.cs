@@ -1,18 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI
 {
     public class WinPopup : Popup
     {
-        [SerializeField] private Button confirmButton;
+        [Inject] private GameManager _gameManager;
+        
+        [SerializeField] private Button nextLevelButton;
         [SerializeField] private Button homeButton;
 
         public override void Initialize()
         {
             base.Initialize();
-            confirmButton.onClick.RemoveAllListeners();
-            confirmButton.onClick.AddListener(() => Close());
+            
+            homeButton.onClick.RemoveAllListeners();
+            homeButton.onClick.AddListener(OnHomeButtonClick);
+            
+            nextLevelButton.onClick.RemoveAllListeners();
+            nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
+        }
+        
+        private void OnNextLevelButtonClick()
+        {
+            
+        }
+        
+        private void OnHomeButtonClick()
+        {
+            _gameManager.SetGameState(GameState.SceneIsChanging);
         }
     }
 }

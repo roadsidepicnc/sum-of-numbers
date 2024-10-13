@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 339453322965560738}
   - component: {fileID: 217897049060940481}
-  - component: {fileID: 7186977599659304587}
   m_Layer: 5
   m_Name: SettingsPopup
   m_TagString: Untagged
@@ -55,22 +54,9 @@ MonoBehaviour:
   content: {fileID: 6258165815792413368}
   background: {fileID: 5780231940954998949}
   cancelButton: {fileID: 0}
-  canvasGroup: {fileID: 7186977599659304587}
   popupType: 2
   backButton: {fileID: 4900334901117514959}
   soundButton: {fileID: 7910780158873507586}
---- !u!225 &7186977599659304587
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339453322965560737}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &758454274849020744
 GameObject:
   m_ObjectHideFlags: 0
