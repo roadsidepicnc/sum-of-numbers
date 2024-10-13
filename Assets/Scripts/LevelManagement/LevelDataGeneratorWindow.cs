@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -128,10 +130,10 @@ namespace LevelManagement
             asset.heartCount = heartCount;
             asset.cellDataList = cellDataList;
             
-            AssetDatabase.CreateAsset(asset, "Assets/Resources/Levels/Level-0.asset");
+            AssetDatabase.CreateAsset(asset, "Assets/Resources/Levels/Level-" + id + ".asset");
             AssetDatabase.SaveAssets();
             
-            Debug.Log("Level is successfully created");
+            Debug.Log("Level-" + id + " is successfully created");
             DisplayGrid(rowCount, columnCount, heartCount, cellDataList);
         }
 
@@ -187,3 +189,5 @@ namespace LevelManagement
         }
     }
 }
+
+#endif

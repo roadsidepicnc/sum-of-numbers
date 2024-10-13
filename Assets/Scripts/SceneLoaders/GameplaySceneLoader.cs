@@ -11,13 +11,13 @@ using Zenject;
 public class GameplaySceneLoader : MonoBehaviour
 {
     [Inject] private ObjectPoolManager _objectPoolManager;
-    [Inject] private LevelManager _levelManager;
     [Inject] private PopupManager _popupManager;
     [Inject] private GridManager _gridManager;
     [Inject] private GameplayManager _gameplayManager;
     [Inject] private GameManager _gameManager;
     [Inject] private HeartManager _heartManager;
     [Inject] private TargetScoreManager _targetScoreManager;
+    [Inject] private CircleManager _circleManager;
     [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     
     private List<Manager> _managers;
@@ -36,12 +36,11 @@ public class GameplaySceneLoader : MonoBehaviour
         _managers = new();
         
         _managers.Add(_objectPoolManager);
-        _managers.Add(_gameManager);
-        _managers.Add(_levelManager);
         _managers.Add(_popupManager);
         _managers.Add(_gridManager);
         _managers.Add(_gameplayManager);
         _managers.Add(_heartManager);
+        _managers.Add(_circleManager);
         _managers.Add(_targetScoreManager);
         
         foreach (var manager in _managers)

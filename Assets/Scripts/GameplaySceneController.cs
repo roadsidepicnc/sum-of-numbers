@@ -72,10 +72,16 @@ public class GameplaySceneController : MonoBehaviour, ISubscribable
     
     private async void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
     {
-        if (gameStateChangedSignal.GameState == GameState.SceneIsChanged)
+        switch (gameStateChangedSignal.GameState)
         {
-            _objectPoolManager.ResetPools();
-            await SceneManager.LoadSceneAsync("MainMenu");
+            case GameState.SceneIsChanged:
+                _objectPoolManager.ResetPools();
+                await SceneManager.LoadSceneAsync("MainMenu");
+                break;
+            case GameState.SceneIsReloaded:
+                _objectPoolManager.ResetPools();
+                await SceneManager.LoadSceneAsync("Gameplay");
+                break;
         }
     }
 

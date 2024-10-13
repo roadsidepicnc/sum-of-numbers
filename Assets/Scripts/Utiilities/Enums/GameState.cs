@@ -8,8 +8,8 @@
         SceneIsChanged,
         OnGameplay,
         OnMenu,
-        ResettingGameplay,
-        ResettingDoneGameplay,
+        SceneIsReloading,
+        SceneIsReloaded,
         Won,
         Lost,
         Paused

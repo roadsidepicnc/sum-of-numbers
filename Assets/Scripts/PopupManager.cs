@@ -69,6 +69,14 @@ namespace UI
             {
                 CommandManager.ClearAllCommands();
             }
+            else if (gameStateChangedSignal.GameState == GameState.SceneIsReloaded)
+            {
+                CommandManager.ClearAllCommands();
+                foreach (var popup in _instantiatedPopups.Values)
+                {
+                    popup.gameObject.SetActive(false);
+                }
+            }
         }
     }
 }

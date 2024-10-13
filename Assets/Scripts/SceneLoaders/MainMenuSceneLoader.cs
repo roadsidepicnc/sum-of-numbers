@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Gameplay;
+using InputManagement;
 using ObjectPoolingSystem;
 using UI;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class MainMenuSceneLoader : MonoBehaviour
 {
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private GameManager _gameManager;
+    [Inject] private InputManager _inputManager;
     [Inject] private PopupManager _popupManager;
     [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     
@@ -28,6 +30,7 @@ public class MainMenuSceneLoader : MonoBehaviour
         
         _managers = new();
         
+        _managers.Add(_inputManager);
         _managers.Add(_objectPoolManager);
         _managers.Add(_popupManager);
         

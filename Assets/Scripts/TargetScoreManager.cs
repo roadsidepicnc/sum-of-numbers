@@ -9,6 +9,7 @@ namespace Gameplay
 {
     public class TargetScoreManager : Manager
     {
+        [Inject] private SignalBus _signalBus;
         [Inject] private TargetScoreCreator _targetScoreCreator;
         [Inject] private LevelManager _levelManager;
         
@@ -22,11 +23,11 @@ namespace Gameplay
             _rowTargetScoreTexts = new();
             _columnTargetScoreTexts = new();
             
-            _targetScoreCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _rowTargetScoreTexts, _columnTargetScoreTexts);
+            Create();
             
             IsInitialized = true;
         }
-
+        
         public async UniTask CompleteTargetScore(TargetScoreText.AlignmentType alignmentType, int index)
         {
             var targetScoreText = alignmentType switch
@@ -42,6 +43,13 @@ namespace Gameplay
             }
 
             await targetScoreText.Complete();
+        }
+
+        private void Create()
+        {
+            _rowTargetScoreTexts.Clear();
+            _columnTargetScoreTexts.Clear();
+            _targetScoreCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _rowTargetScoreTexts, _columnTargetScoreTexts);
         }
     }
 }

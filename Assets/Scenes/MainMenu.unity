@@ -770,7 +770,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 1482885325}
-  targetSceneGameState: 5
+  targetGameState: 5
   fadeInDuration: 0.5
   fadeOutDuration: 0.25
 --- !u!225 &1482885325

@@ -13,7 +13,7 @@ namespace UI
         [Inject] private SignalBus _signalBus;
 
         [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] private GameState targetSceneGameState;
+        [SerializeField] private GameState targetGameState;
         
         [Header("Durations")]
         [SerializeField] private float fadeInDuration = .5f;
@@ -50,11 +50,15 @@ namespace UI
             {
                 case GameState.ManagersAreInitialized:
                     await PlayFadeInAnimation(fadeInDuration);
-                    _gameManager.SetGameState(targetSceneGameState);
+                    _gameManager.SetGameState(targetGameState);
                     break;
                 case GameState.SceneIsChanging:
                     await PlayFadeOutAnimation(fadeOutDuration);
                     _gameManager.SetGameState(GameState.SceneIsChanged);
+                    break;
+                case GameState.SceneIsReloading:
+                    await PlayFadeOutAnimation(fadeOutDuration);
+                    _gameManager.SetGameState(GameState.SceneIsReloaded);
                     break;
             }
         }

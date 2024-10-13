@@ -24,7 +24,7 @@ namespace UI
         
         private void OnNextLevelButtonClick()
         {
-            
+            _gameManager.SetGameState(GameState.SceneIsReloading);
         }
         
         private void OnHomeButtonClick()

@@ -8,6 +8,7 @@ namespace GridManagement
 {
     public class GridManager : Manager
     {
+        [Inject] private SignalBus _signalBus;
         [Inject] private GridCreator _gridCreator;
         [Inject] private LevelManager _levelManager;
         
@@ -25,10 +26,18 @@ namespace GridManagement
             _cellList = new();
             _rowTargetScoreTexts = new();
             _columnTargetScoreTexts = new();
-            
-            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList, ref _cellSize);
+            Create();
             
             IsInitialized = true;
+        }
+        
+        private void Create()
+        {
+            _cellList.Clear();
+            _rowTargetScoreTexts.Clear();
+            _columnTargetScoreTexts.Clear();
+            
+            _gridCreator.Create(_levelManager.CurrentLevelRowCount, _levelManager.CurrentLevelColumnCount, _cellList, ref _cellSize);
         }
         
         public Cell GetCell(int row, int column) => _cellList.Find(x => x.Row == row && x.Column == column);

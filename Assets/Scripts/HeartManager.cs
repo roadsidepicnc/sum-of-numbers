@@ -4,13 +4,13 @@ using LevelManagement;
 using ObjectPoolingSystem;
 using UI;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Gameplay
 {
     public class HeartManager : Manager
     {
+        [Inject] private SignalBus _signalBus;
         [Inject] private LevelManager _levelManager;
         [Inject] private ObjectPoolManager _objectPoolManager;
 

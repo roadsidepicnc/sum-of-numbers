@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Gameplay;
 using ObjectPoolingSystem;
 using TMPro;
 using UI;
@@ -13,8 +14,8 @@ namespace GridManagement
 {
     public class Cell : PoolObject
     {
-        [Inject] private ObjectPoolManager _objectPoolManager;
         [Inject] private SignalBus _signalBus;
+        [Inject] private CircleManager circleManager;
         
         [Header("UI Components")]
         [SerializeField] private Button button;
@@ -54,7 +55,7 @@ namespace GridManagement
 
         private void OnButtonClick()
         {
-            if (GameManager.GameState != GameState.OnGameplay)
+            if (GameManager.GameState != GameState.OnGameplay || GameManager.InputState != InputState.Active)
             {
                 return;
             }
@@ -76,6 +77,7 @@ namespace GridManagement
         private void SetUI()
         {
             valueText.text = Value.ToString();
+            canvasGroup.alpha = 1f;
         }
         
         public async UniTask PlaceCircle()
@@ -85,8 +87,7 @@ namespace GridManagement
                 return;
             }
             
-            _circle = _objectPoolManager.GetObject(PoolObjectType.Circle, transform) as Circle;
-            _circle?.Set(Color.black, _rectTransform.sizeDelta.x * CircleSizeMultiplier, _rectTransform.sizeDelta.y * CircleSizeMultiplier);
+            _circle = circleManager.Create(transform, _rectTransform.sizeDelta.x, _rectTransform.sizeDelta.y);
             if (_circle != null)
             {
                 await _circle.PlayAnimation(.35f);
@@ -101,7 +102,7 @@ namespace GridManagement
                 return;
             }
             
-            _objectPoolManager.ResetObject(_circle);
+            circleManager.Reset(_circle);
             _circle = null;
         }
 

@@ -110,7 +110,6 @@ namespace Gameplay
         
         private void Win()
         {
-            _levelManager.IncreaseLevelId();
             _gameManager.SetGameState(GameState.Won);
             _popupManager.Show(PopupType.WinPopup);
         }
@@ -163,8 +162,7 @@ namespace Gameplay
         {
             if (GameManager.GameState != GameState.Won && Input.GetKeyDown(KeyCode.A))
             {
-                _gameManager.SetGameState(GameState.Won);
-                _popupManager.Show(PopupType.WinPopup);
+                Win();
             }
 
             if (Input.GetKeyDown(KeyCode.R))
