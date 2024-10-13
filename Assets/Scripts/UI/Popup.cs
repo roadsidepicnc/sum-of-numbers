@@ -41,7 +41,6 @@ namespace UI
         
         public virtual async UniTask Open(Action callback = null)
         {
-            _gameManager.SetInputState(InputState.NonActive);
             IsOpening = true;
             gameObject.SetActive(true);
             content.DOKill();
@@ -49,19 +48,16 @@ namespace UI
             background.DOFade(180f / 255f, duration).From(0f);
             await content.DoHitScale(callback, duration);
             IsOpening = false;
-            _gameManager.SetInputState(InputState.Active);
         }
         
         public virtual async UniTask Close(Action callback = null, bool ignoreCommand = false)
         {
-            _gameManager.SetInputState(InputState.NonActive);
             content.DOKill();
             content.DOScale(Vector3.zero, .25f);
             background.DOKill();
             await background.DOFade(0f, .4f);
             gameObject.SetActive(false);
             _command?.Complete();
-            _gameManager.SetInputState(InputState.Active);
         }
     }
 }

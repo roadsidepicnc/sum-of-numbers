@@ -50,15 +50,15 @@ namespace UI
             {
                 case GameState.ManagersAreInitialized:
                     await PlayFadeInAnimation(fadeInDuration);
-                    _gameManager.SetGameState(targetGameState);
+                    _signalBus.Fire(new GameStateChangedSignal(targetGameState));
                     break;
                 case GameState.SceneIsChanging:
                     await PlayFadeOutAnimation(fadeOutDuration);
-                    _gameManager.SetGameState(GameState.SceneIsChanged);
+                    _signalBus.Fire(new GameStateChangedSignal(GameState.SceneIsChanged));
                     break;
                 case GameState.SceneIsReloading:
                     await PlayFadeOutAnimation(fadeOutDuration);
-                    _gameManager.SetGameState(GameState.SceneIsReloaded);
+                    _signalBus.Fire(new GameStateChangedSignal(GameState.SceneIsReloaded));
                     break;
             }
         }

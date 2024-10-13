@@ -110,13 +110,13 @@ namespace Gameplay
         
         private void Win()
         {
-            _gameManager.SetGameState(GameState.Won);
+            _signalBus.Fire(new GameStateChangedSignal(GameState.Won));
             _popupManager.Show(PopupType.WinPopup);
         }
         
         private void Lose()
         {
-            _gameManager.SetGameState(GameState.Lost);
+            _signalBus.Fire(new GameStateChangedSignal(GameState.Lost));
             _popupManager.Show(PopupType.LosePopup);
         }
         

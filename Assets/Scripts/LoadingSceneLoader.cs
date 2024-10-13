@@ -4,10 +4,12 @@ using Gameplay;
 using LevelManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities.Signals;
 using Zenject;
 
 public class LoadingSceneLoader : MonoBehaviour
 {
+    [Inject] private SignalBus _signalBus;
     [Inject] private LevelManager _levelManager;
     [Inject] private GameManager _gameManager;
     
@@ -25,7 +27,7 @@ public class LoadingSceneLoader : MonoBehaviour
         _managers.Add(_gameManager);
         _managers.Add(_levelManager);
         
-        _gameManager.SetGameState(GameState.ManagersAreInitializing);
+        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitializing));
         
         foreach (var manager in _managers)
         {
@@ -34,8 +36,8 @@ public class LoadingSceneLoader : MonoBehaviour
         
         await UniTask.WaitUntil(AreAllManagersInitialized);
         
-        _gameManager.SetGameState(GameState.ManagersAreInitialized);
-        
+        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
+
         await SceneManager.LoadSceneAsync("MainMenu");
         
         return;

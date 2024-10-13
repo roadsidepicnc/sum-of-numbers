@@ -62,7 +62,7 @@ public class GameplaySceneController : MonoBehaviour, ISubscribable
 
     private void OnHomeButtonClick()
     {
-        _gameManager.SetGameState(GameState.SceneIsChanging);
+        _signalBus.Fire(new GameStateChangedSignal(GameState.SceneIsChanging));
     }
     
     private void OnSettingsButtonClick()

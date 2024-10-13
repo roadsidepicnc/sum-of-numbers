@@ -5,12 +5,13 @@ using InputManagement;
 using ObjectPoolingSystem;
 using UI;
 using UnityEngine;
+using Utilities.Signals;
 using Zenject;
 
 public class MainMenuSceneLoader : MonoBehaviour
 {
+    [Inject] private SignalBus _signalBus;
     [Inject] private ObjectPoolManager _objectPoolManager;
-    [Inject] private GameManager _gameManager;
     [Inject] private InputManager _inputManager;
     [Inject] private PopupManager _popupManager;
     [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
@@ -24,7 +25,8 @@ public class MainMenuSceneLoader : MonoBehaviour
 
     private async void Initialize()
     {
-        _gameManager.SetGameState(GameState.ManagersAreInitializing);
+        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitializing));
+
         
         _safeSpaceAdjuster.Initialize();
         
@@ -42,7 +44,7 @@ public class MainMenuSceneLoader : MonoBehaviour
         await UniTask.WaitUntil(AreAllManagersInitialized);
         await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
-        _gameManager.SetGameState(GameState.ManagersAreInitialized);
+        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
         
         return;
 

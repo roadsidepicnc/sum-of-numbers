@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Signals;
 using Zenject;
 
 namespace UI
 {
     public class LosePopup : Popup
     {
-        [Inject] private GameManager _gameManager;
+        [Inject] private SignalBus _signalBus;
         
         [SerializeField] private Button restartButton;
         [SerializeField] private Button homeButton;
@@ -24,12 +25,12 @@ namespace UI
 
         private void OnRestartButtonClick()
         {
-            _gameManager.SetGameState(GameState.SceneIsReloading);
+            _signalBus.Fire(new GameStateChangedSignal(GameState.SceneIsReloading));
         }
 
         private void OnHomeButtonClick()
         {
-            _gameManager.SetGameState(GameState.SceneIsChanging);
+            _signalBus.Fire(new GameStateChangedSignal(GameState.SceneIsChanging));
         }
     }
 }

@@ -7,27 +7,26 @@ public class GameManager : Manager
     [Inject] private SignalBus _signalBus;
     
     public static GameState GameState { get; private set; }
-    public static InputState InputState { get; private set; }
-    
-    private void Start()
-    {
-        Initialize();
-    }
     
     public override void Initialize()
     {
+        base.Initialize();
+        
         IsInitialized = true;
     }
 
-    public void SetGameState(GameState gameState)
+    public override void Subscribe()
     {
-        GameState = gameState;
-        _signalBus.Fire(new GameStateChangedSignal(GameState));
+        _signalBus.Subscribe<GameStateChangedSignal>(OnGameStateChanged);
     }
-    
-    public void SetInputState(InputState inputState)
+
+    public override void Unsubscribe()
     {
-        InputState = inputState;
-        _signalBus.Fire(new InputStateChangedSignal(InputState));
+        _signalBus.Unsubscribe<GameStateChangedSignal>(OnGameStateChanged);
+    }
+
+    private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
+    {
+        GameState = gameStateChangedSignal.GameState;
     }
 }

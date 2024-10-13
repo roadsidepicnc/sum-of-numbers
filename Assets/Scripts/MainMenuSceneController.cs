@@ -80,7 +80,7 @@ public class MainMenuSceneController : MonoBehaviour, ISubscribable
 
     private void OnPlayButtonClick()
     {
-        _gameManager.SetGameState(GameState.SceneIsChanging);
+        _signalBus.Fire(new GameStateChangedSignal(GameState.SceneIsChanging));
     }
 
     private void OnSettingsButtonClick()

@@ -2,13 +2,14 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Signals;
 using Zenject;
 
 namespace UI
 {
     public class SettingsPopup : Popup
     {
-        [Inject] private GameManager _gameManager;
+        [Inject] private SignalBus _signalBus;
         
         [SerializeField] private Button backButton;
         [SerializeField] private SoundButton soundButton;
@@ -27,14 +28,14 @@ namespace UI
         public override async UniTask Open(Action callback = null)
         {
             _previousGameState = GameManager.GameState;
-            _gameManager.SetGameState(GameState.Paused);
+            _signalBus.Fire(new GameStateChangedSignal(GameState.Paused));
             base.Open(callback);
         }
 
         public override async UniTask Close(Action callback = null, bool ignoreCommand = false)
         {
             await base.Close(callback, ignoreCommand);
-            _gameManager.SetGameState(_previousGameState);
+            _signalBus.Fire(new GameStateChangedSignal(_previousGameState));
         }
     }
 }
