@@ -17,10 +17,10 @@ namespace UI
         
         [Inject] private GameplayManager _gameplayManager;
         
-        public void Set(int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
+        public void Set(bool isCompleted, int value, AlignmentType alignmentType, int alignmentIndex, float width, float height)
         {
             targetScoreText.text = value.ToString();
-            canvasGroup.alpha = 1f;
+            canvasGroup.alpha = !isCompleted ? 1f : 0f;
             
             var rectTransform = GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(width, height);

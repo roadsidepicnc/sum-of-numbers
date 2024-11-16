@@ -2,6 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Gameplay;
+using LevelManagement;
 using ObjectPoolingSystem;
 using TMPro;
 using UI;
@@ -15,24 +16,23 @@ namespace GridManagement
     public class Cell : PoolObject
     {
         [Inject] private SignalBus _signalBus;
-        [Inject] private CircleManager circleManager;
+        [Inject] private CircleManager _circleManager;
         
         [Header("UI Components")]
         [SerializeField] private Button button;
         [SerializeField] private TextMeshProUGUI valueText;
         [SerializeField] private Image background;
         [SerializeField] private CanvasGroup canvasGroup;
-
-        private const float CircleSizeMultiplier = .85f; 
         
+        private CellData _cellData;
         private Circle _circle;
         private RectTransform _rectTransform;
-        
-        public CellState CellState { get; private set; }
-        public bool IsTarget { get; private set; }
-        public int Value { get; private set; }
-        public int Row { get; private set; }
-        public int Column { get; private set; }
+
+        public CellState CellState => _cellData.cellState;
+        public bool IsTarget => _cellData.isTarget;
+        public int Value => _cellData.value;
+        public int Row => _cellData.row;
+        public int Column => _cellData.column;
 
         public override void Initialize(Transform parent, Action<PoolObject> resetAction)
         {
@@ -40,17 +40,13 @@ namespace GridManagement
             _rectTransform = transform as RectTransform;
         }
 
-        public void Set(string name, int value, int row, int column, CellState cellState, bool isTarget)
+        public void Set(string name, CellData cellData, float cellSize)
         {
-            CellState = cellState;
-            IsTarget = isTarget;
-            Value = value;
+            _cellData = cellData;
             gameObject.name = name;
-            Row = row;
-            Column = column;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(OnButtonClick);
-            SetUI();
+            SetUI(cellSize);
         }
 
         private void OnButtonClick()
@@ -74,24 +70,38 @@ namespace GridManagement
             base.Reset(parent);
         }
 
-        private void SetUI()
+        public void SetUI(float cellSize)
         {
             valueText.text = Value.ToString();
             canvasGroup.alpha = 1f;
+            
+            switch (CellState)
+            {
+                case CellState.Selected:
+                    PlaceCircle(cellSize, false);
+                    break;
+                case CellState.Erased:
+                    Erase(0f);
+                    break;
+            }
         }
         
-        public async UniTask PlaceCircle()
+        public async UniTask PlaceCircle(float cellSize, bool withAnimation = true)
         {
             if (_rectTransform == null)
             {
                 return;
             }
             
-            _circle = circleManager.Create(transform, _rectTransform.sizeDelta.x, _rectTransform.sizeDelta.y);
+            _circle = _circleManager.Create(transform, cellSize, cellSize);
             if (_circle != null)
             {
-                await _circle.PlayAnimation(.35f);
-                CellState = CellState.Selected;
+                if (withAnimation)
+                {
+                    await _circle.PlayAnimation(.35f);
+                }
+                
+                _cellData.cellState = CellState.Selected;
             }
         }
 
@@ -102,14 +112,14 @@ namespace GridManagement
                 return;
             }
             
-            circleManager.Reset(_circle);
+            _circleManager.Reset(_circle);
             _circle = null;
         }
 
         public async UniTask Erase(float duration = .2f)
         {
             await canvasGroup.DOFade(0f, duration).From(1f);
-            CellState = CellState.Erased;
+            _cellData.cellState = CellState.Erased;
         }
     }
 }

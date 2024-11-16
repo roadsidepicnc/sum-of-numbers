@@ -46,6 +46,9 @@ namespace GridManagement
         
         public List<Cell> GetColumn(int column) => _cellList.FindAll(x => x.Column == column);
 
+        public bool IsRowCompleted(int row) => GetRow(row).Find(x => x.CellState == CellState.NotSelected) == null;
+        public bool IsColumnCompleted(int column) => GetColumn(column).Find(x => x.CellState == CellState.NotSelected) == null;
+        
         public int GetRowTarget(int row)
         {
             var count = 0;

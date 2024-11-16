@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI-Sprite-Atlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 0a05879ff21026f4f8c76932f24959f0, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c2679e80355f29741a35b46dfff4130b, type: 3}
+  - {fileID: 21300000, guid: dc92ee3113f366d4db35560867d2dfd2, type: 3}
+  - {fileID: 21300000, guid: ce67e3415e3606548a2331626719b822, type: 3}
+  - {fileID: 21300000, guid: 10988df15cf134647a202b3ed6bfaec4, type: 3}
+  - {fileID: 21300000, guid: 0296684357e93a045b290891211cbf1e, type: 3}
+  - {fileID: 21300000, guid: e99d37e5b48f0a24ba6946fedfcd2f3d, type: 3}
+  - {fileID: 21300000, guid: 1ce919863c08ba942935e78937e5367c, type: 3}
+  - {fileID: 21300000, guid: 2419f4c6ef42abe40a9016519f942780, type: 3}
+  - {fileID: 21300000, guid: 1cb54918e53d64547a446c7d7c24b9aa, type: 3}
+  - {fileID: 21300000, guid: 1a907c38d0dbc7240b28a5450a88e572, type: 3}
+  - {fileID: 21300000, guid: fc1723193809edb45af46f0b21312cab, type: 3}
+  - {fileID: 21300000, guid: 6de17bbbab94a5d40b6e9cbb441c86c2, type: 3}
+  - {fileID: 21300000, guid: dbf1021cb5b9cfd4b8d4aff8d2187bdc, type: 3}
+  - {fileID: 21300000, guid: 67cf891ce5ca93c46b3b22d0ee3b4177, type: 3}
+  - {fileID: 21300000, guid: d6ac028d5ac12db4da537f3f5ef7b4f8, type: 3}
+  - {fileID: 21300000, guid: 9c663b3ef21271942804f93ca2bf846c, type: 3}
+  - {fileID: 21300000, guid: 846ba46e02cb6474c87e32de2ece6f18, type: 3}
+  - {fileID: 21300000, guid: 2d56629ea2c37bb4fa0ccd5488dbaa0a, type: 3}
+  - {fileID: 21300000, guid: 69ea21ce3f17afd4592324d526dbcd21, type: 3}
+  - {fileID: 21300000, guid: 6735fc9fcaf0147479be552dac7a6024, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Icons_Home
+  - pencil
+  - Icons_Trophy
+  - Icons_ArrowLeft
+  - Icons_X
+  - CircleWithOutlline
+  - left-arrow
+  - Arrow2
+  - Circle
+  - Heart
+  - Icons_Settings
+  - Icons_Undo
+  - Icons_Mute
+  - passive-heart
+  - active-heart
+  - cog
+  - Icons_Sound
+  - solid-circle-png 1
+  - eraser
+  - Icons_Settings2
+  m_RenderDataMap: {}
+  m_Tag: UI-Sprite-Atlas
+  m_IsVariant: 0

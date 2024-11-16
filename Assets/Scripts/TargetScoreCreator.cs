@@ -29,7 +29,7 @@ namespace Gameplay
             {
                 var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
                 var targetScoreText = (poolObject as TargetScoreText);
-                targetScoreText?.Set(_gridManager.GetRowTarget(i), TargetScoreText.AlignmentType.Row, i, cellSize, cellSize); 
+                targetScoreText?.Set(_gridManager.IsRowCompleted(i), _gridManager.GetRowTarget(i), TargetScoreText.AlignmentType.Row, i, cellSize, cellSize); 
                 targetScoreTextList.Add(targetScoreText);
             }
         }
@@ -40,7 +40,7 @@ namespace Gameplay
             {
                 var poolObject = _objectPoolManager.GetObject(PoolObjectType.TargetScoreText, parent);
                 var targetScoreText = poolObject as TargetScoreText;
-                targetScoreText?.Set(_gridManager.GetColumnTarget(i), TargetScoreText.AlignmentType.Column, i, cellSize, cellSize);
+                targetScoreText?.Set(_gridManager.IsColumnCompleted(i), _gridManager.GetColumnTarget(i), TargetScoreText.AlignmentType.Column, i, cellSize, cellSize);
                 targetScoreTextList.Add(targetScoreText);
             }
         }

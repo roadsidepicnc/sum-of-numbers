@@ -96,7 +96,7 @@ namespace GridManagement
                     }
                     
                     var cellData = _levelManager.GetCellData(i, j);
-                    cell.Set("Cell (" + i + "," + j + ")", cellData.value, i, j, CellState.NotSelected, cellData.isTarget);
+                    cell.Set("Cell (" + i + "," + j + ")", cellData, cellSize);
                     cells.Add(cell);
                 }
             }

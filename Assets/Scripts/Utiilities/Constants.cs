@@ -7,5 +7,6 @@ namespace Utilities
         public const float DefaultScreenResolution = (float) DefaultScreenWidth / DefaultScreenHeight; 
         
         public const string CurrentLevelIndex = "LevelIndex";
+        public const string CurrentLevelData = "CurrentLevelData";
     }
 }

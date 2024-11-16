@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circleSizeMultiplier: 0.8
-  circleColor: {r: 0, g: 0, b: 0, a: 0}
+  circleColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &7877535348081954975
 MonoBehaviour:
   m_ObjectHideFlags: 0

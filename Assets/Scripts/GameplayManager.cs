@@ -14,7 +14,6 @@ namespace Gameplay
         [Inject] private GridManager _gridManager;
         [Inject] private LevelManager _levelManager;
         [Inject] private PopupManager _popupManager;
-        [Inject] private GameManager _gameManager;
         [Inject] private HeartManager _heartManager;
         [Inject] private TargetScoreManager _targetScoreManager;
         
@@ -65,7 +64,7 @@ namespace Gameplay
                 }
                 else
                 {
-                    await cell.PlaceCircle();
+                    await cell.PlaceCircle(_gridManager.CellSize);
                 }
             }
             else if (ClickMode == ClickMode.Erase)

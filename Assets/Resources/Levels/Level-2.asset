@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: Level-2
   m_EditorClassIdentifier: 
   id: 2
-  rowCount: 7
-  columnCount: 7
-  heartCount: 4
+  rowCount: 5
+  columnCount: 5
+  heartCount: 2
   cellDataList:
   - isTarget: 1
     row: 0
     column: 0
-    value: 2
-  - isTarget: 1
-    row: 0
-    column: 1
-    value: 6
+    value: 4
   - isTarget: 0
     row: 0
+    column: 1
+    value: 4
+  - isTarget: 1
+    row: 0
     column: 2
-    value: 1
+    value: 6
   - isTarget: 1
     row: 0
     column: 3
@@ -36,180 +36,84 @@ MonoBehaviour:
   - isTarget: 1
     row: 0
     column: 4
-    value: 1
-  - isTarget: 1
-    row: 0
-    column: 5
-    value: 7
-  - isTarget: 1
-    row: 0
-    column: 6
     value: 9
   - isTarget: 1
     row: 1
     column: 0
-    value: 2
-  - isTarget: 1
+    value: 7
+  - isTarget: 0
     row: 1
     column: 1
-    value: 1
+    value: 6
   - isTarget: 1
     row: 1
     column: 2
-    value: 9
-  - isTarget: 0
-    row: 1
-    column: 3
-    value: 1
-  - isTarget: 1
-    row: 1
-    column: 4
-    value: 7
-  - isTarget: 1
-    row: 1
-    column: 5
     value: 5
   - isTarget: 1
     row: 1
-    column: 6
-    value: 7
-  - isTarget: 1
-    row: 2
-    column: 0
-    value: 4
-  - isTarget: 1
-    row: 2
-    column: 1
-    value: 8
-  - isTarget: 1
-    row: 2
-    column: 2
-    value: 6
-  - isTarget: 1
-    row: 2
     column: 3
-    value: 3
-  - isTarget: 1
-    row: 2
-    column: 4
-    value: 1
-  - isTarget: 0
-    row: 2
-    column: 5
-    value: 1
-  - isTarget: 1
-    row: 2
-    column: 6
-    value: 7
-  - isTarget: 1
-    row: 3
-    column: 0
-    value: 6
-  - isTarget: 1
-    row: 3
-    column: 1
-    value: 5
-  - isTarget: 1
-    row: 3
-    column: 2
-    value: 3
-  - isTarget: 1
-    row: 3
-    column: 3
-    value: 8
-  - isTarget: 0
-    row: 3
-    column: 4
-    value: 6
-  - isTarget: 1
-    row: 3
-    column: 5
-    value: 3
-  - isTarget: 1
-    row: 3
-    column: 6
-    value: 4
-  - isTarget: 1
-    row: 4
-    column: 0
     value: 9
   - isTarget: 1
-    row: 4
-    column: 1
-    value: 4
-  - isTarget: 1
-    row: 4
-    column: 2
-    value: 6
-  - isTarget: 1
-    row: 4
-    column: 3
-    value: 2
-  - isTarget: 0
-    row: 4
+    row: 1
     column: 4
-    value: 5
-  - isTarget: 1
-    row: 4
-    column: 5
-    value: 5
-  - isTarget: 1
-    row: 4
-    column: 6
-    value: 5
-  - isTarget: 1
-    row: 5
-    column: 0
     value: 8
-  - isTarget: 0
-    row: 5
-    column: 1
-    value: 6
   - isTarget: 1
-    row: 5
+    row: 2
+    column: 0
+    value: 2
+  - isTarget: 1
+    row: 2
+    column: 1
+    value: 2
+  - isTarget: 1
+    row: 2
     column: 2
     value: 2
   - isTarget: 1
-    row: 5
+    row: 2
     column: 3
-    value: 1
-  - isTarget: 1
-    row: 5
+    value: 2
+  - isTarget: 0
+    row: 2
     column: 4
-    value: 6
+    value: 7
   - isTarget: 1
-    row: 5
-    column: 5
-    value: 4
-  - isTarget: 1
-    row: 5
-    column: 6
+    row: 3
+    column: 0
+    value: 7
+  - isTarget: 0
+    row: 3
+    column: 1
     value: 2
   - isTarget: 1
-    row: 6
-    column: 0
+    row: 3
+    column: 2
     value: 3
   - isTarget: 1
-    row: 6
-    column: 1
-    value: 3
+    row: 3
+    column: 3
+    value: 9
   - isTarget: 1
-    row: 6
+    row: 3
+    column: 4
+    value: 6
+  - isTarget: 1
+    row: 4
+    column: 0
+    value: 5
+  - isTarget: 0
+    row: 4
+    column: 1
+    value: 6
+  - isTarget: 1
+    row: 4
     column: 2
     value: 8
   - isTarget: 1
-    row: 6
+    row: 4
     column: 3
-    value: 8
-  - isTarget: 0
-    row: 6
-    column: 4
-    value: 1
-  - isTarget: 1
-    row: 6
-    column: 5
     value: 6
   - isTarget: 1
-    row: 6
-    column: 6
-    value: 1
+    row: 4
+    column: 4
+    value: 9

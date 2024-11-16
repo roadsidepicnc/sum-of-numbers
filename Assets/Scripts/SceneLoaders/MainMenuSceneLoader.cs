@@ -1,6 +1,5 @@
-using System.Collections.Generic;
+using System;
 using Cysharp.Threading.Tasks;
-using Gameplay;
 using InputManagement;
 using ObjectPoolingSystem;
 using UI;
@@ -8,57 +7,37 @@ using UnityEngine;
 using Utilities.Signals;
 using Zenject;
 
-public class MainMenuSceneLoader : MonoBehaviour
+public class MainMenuSceneLoader : SceneLoader
 {
-    [Inject] private SignalBus _signalBus;
+    [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private InputManager _inputManager;
     [Inject] private PopupManager _popupManager;
-    [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
-    
-    private List<Manager> _managers;
-    
-    private void Start()
-    {
-        Initialize();
-    }
 
-    private async void Initialize()
+    protected override async void Initialize()
     {
-        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitializing));
-
-        
+        SignalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitializing));
         _safeSpaceAdjuster.Initialize();
-        
-        _managers = new();
-        
-        _managers.Add(_inputManager);
-        _managers.Add(_objectPoolManager);
-        _managers.Add(_popupManager);
-        
-        foreach (var manager in _managers)
+            
+        try
         {
-            manager.Initialize();
+            await InitializeManagers();
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.LogError("Main Menu Scene managers couldn't be initialized");
+            return;
         }
         
-        await UniTask.WaitUntil(AreAllManagersInitialized);
         await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
-        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
-        
-        return;
+        SignalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
+    }
 
-        bool AreAllManagersInitialized()
-        {
-            foreach (var manager in _managers)
-            {
-                if (!manager.IsInitialized)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+    protected override void AddManagers()
+    {
+        Managers.Add(_inputManager);
+        Managers.Add(_objectPoolManager);
+        Managers.Add(_popupManager);
     }
 }

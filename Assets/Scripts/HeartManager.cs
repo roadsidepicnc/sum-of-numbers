@@ -38,17 +38,24 @@ namespace Gameplay
 
             base.Initialize();
             
-            SetHearts(_levelManager.CurrentLevelHeartCount);
+            SetHearts(_levelManager.CurrentLevelCurrentHeartCount, _levelManager.CurrentLevelMaxHeartCount - _levelManager.CurrentLevelCurrentHeartCount);
             
             IsInitialized = true;
         }
 
-        private void SetHearts(int count)
+        private void SetHearts(int activeCount, int passiveCount)
         {
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < activeCount; i++)
             {
                 var heart = _objectPoolManager.GetObject(PoolObjectType.Heart, parent) as Heart;
                 heart?.Set(activeHeartSprite, activeHeartColor, true);
+                _hearts.Add(heart);
+            }
+            
+            for (var i = 0; i < passiveCount; i++)
+            {
+                var heart = _objectPoolManager.GetObject(PoolObjectType.Heart, parent) as Heart;
+                heart?.Set(passiveHeartSprite, passiveHeartColor, false);
                 _hearts.Add(heart);
             }
         }
@@ -59,6 +66,8 @@ namespace Gameplay
             {
                 return;
             }
+            
+            _levelManager.DecreaseHeartAtLevelData();
             
             for (var i = _hearts.Count - 1; i >= 0; i--)
             {

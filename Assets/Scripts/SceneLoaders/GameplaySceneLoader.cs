@@ -1,17 +1,16 @@
-using System.Collections.Generic;
+using System;
 using Cysharp.Threading.Tasks;
 using Gameplay;
 using GridManagement;
-using LevelManagement;
 using ObjectPoolingSystem;
 using UI;
 using UnityEngine;
 using Utilities.Signals;
 using Zenject;
 
-public class GameplaySceneLoader : MonoBehaviour
+public class GameplaySceneLoader : SceneLoader
 {
-    [Inject] private SignalBus _signalBus;
+    [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private PopupManager _popupManager;
     [Inject] private GridManager _gridManager;
@@ -19,54 +18,35 @@ public class GameplaySceneLoader : MonoBehaviour
     [Inject] private HeartManager _heartManager;
     [Inject] private TargetScoreManager _targetScoreManager;
     [Inject] private CircleManager _circleManager;
-    [Inject] private SafeSpaceAdjuster _safeSpaceAdjuster;
-    
-    private List<Manager> _managers;
-    
-    private void Start()
-    {
-        Initialize();
-    }
 
-    private async void Initialize()
+    protected override async void Initialize()
     {
-        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitializing));
-        
+        SignalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitializing));
         _safeSpaceAdjuster.Initialize();
-        
-        _managers = new();
-        
-        _managers.Add(_objectPoolManager);
-        _managers.Add(_popupManager);
-        _managers.Add(_gridManager);
-        _managers.Add(_gameplayManager);
-        _managers.Add(_heartManager);
-        _managers.Add(_circleManager);
-        _managers.Add(_targetScoreManager);
-        
-        foreach (var manager in _managers)
+            
+        try
         {
-            manager.Initialize();
+            await InitializeManagers();
+        }
+        catch (OperationCanceledException e)
+        {
+            Debug.LogError("Gameplay Scene managers couldn't be initialized");
+            return;
         }
         
-        await UniTask.WaitUntil(AreAllManagersInitialized);
         await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
-        _signalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
-        
-        return;
+        SignalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
+    }
 
-        bool AreAllManagersInitialized()
-        {
-            foreach (var manager in _managers)
-            {
-                if (!manager.IsInitialized)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+    protected override void AddManagers()
+    {
+        Managers.Add(_objectPoolManager); 
+        Managers.Add(_popupManager);
+        Managers.Add(_gridManager);
+        Managers.Add(_gameplayManager);
+        Managers.Add(_heartManager);
+        Managers.Add(_circleManager);
+        Managers.Add(_targetScoreManager);
     }
 }

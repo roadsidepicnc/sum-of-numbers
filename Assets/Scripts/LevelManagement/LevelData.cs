@@ -1,23 +1,31 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace LevelManagement
 {
-    [Serializable, CreateAssetMenu(fileName = "Level Data", menuName = "Level Management/Level Data", order = 1)]
-    public class LevelData : ScriptableObject
+    public class LevelData
     {
-        public int id;
         public int rowCount;
         public int columnCount;
-        public int heartCount;
+        public int maxHeartCount;
+        public int currentHeartCount;
         public List<CellData> cellDataList;
 
-        public LevelData(int rowCount, int columnCount, List<CellData> cellDataList)
+        public LevelData()
+        {
+            cellDataList = new();
+        }
+        
+        public LevelData(int rowCount, int columnCount, int maxHeartCount, int currentHeartCount, List<CellData> cellDataList) : this()
         {
             this.rowCount = rowCount;
             this.columnCount = columnCount;
-            this.cellDataList = cellDataList;
+            this.maxHeartCount = maxHeartCount;
+            this.currentHeartCount = currentHeartCount;
+            
+            foreach (var cellData in cellDataList)
+            {
+                this.cellDataList.Add(new CellData(cellData));
+            }
         }
     }
 }
