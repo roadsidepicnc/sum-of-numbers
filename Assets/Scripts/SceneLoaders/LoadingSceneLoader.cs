@@ -24,7 +24,8 @@ public class LoadingSceneLoader : SceneLoader
             Debug.LogError("Loading Scene managers couldn't be initialized");
             return;
         }
-        
+
+        SignalBus.Fire(new SceneStateChangedSignal(SceneState.Loading));
         SignalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
         
         await SceneManager.LoadSceneAsync("MainMenu");

@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 429032136}
   - component: {fileID: 429032135}
   m_Layer: 0
-  m_Name: MainMenu
+  m_Name: UIHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,12 +252,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e473104716ebe468b257d1f9bf86d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topPanel: {fileID: 1209340855}
   playButton: {fileID: 1436639044}
   settingsButton: {fileID: 1827312212}
   achievementsButton: {fileID: 1904540432}
   levelNumberText: {fileID: 1487430180}
-  content: {fileID: 0}
 --- !u!4 &429032136
 Transform:
   m_ObjectHideFlags: 0
@@ -266,7 +264,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429032134}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.767857, y: 1040.4093, z: -20.681404}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -770,7 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 1482885325}
-  targetGameState: 5
+  targetGameState: 9
   fadeInDuration: 0.5
   fadeOutDuration: 0.25
 --- !u!225 &1482885325

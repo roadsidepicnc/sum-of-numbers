@@ -51,7 +51,7 @@ namespace GridManagement
 
         private void OnButtonClick()
         {
-            if (GameManager.GameState != GameState.OnGameplay)
+            if (GameManager.GameState != GameState.Running)
             {
                 return;
             }

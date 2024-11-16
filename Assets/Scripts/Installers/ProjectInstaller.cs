@@ -14,6 +14,7 @@ public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
         SignalBusInstaller.Install(Container);
         Container.DeclareSignal<GameStateChangedSignal>().OptionalSubscriber();
+        Container.DeclareSignal<SceneStateChangedSignal>().OptionalSubscriber();
         Container.DeclareSignal<CellInteractedSignal>();
         Container.DeclareSignal<ClickModeChangedSignal>();
         

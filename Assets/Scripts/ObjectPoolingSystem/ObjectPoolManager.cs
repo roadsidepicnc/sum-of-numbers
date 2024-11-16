@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Gameplay;
 using UnityEngine;
+using Utilities.Signals;
 using Zenject;
 
 namespace ObjectPoolingSystem
@@ -9,6 +10,7 @@ namespace ObjectPoolingSystem
     {
         [Inject] private ObjectPool.Factory _objectPoolFactory;
         [Inject] private ObjectPoolContainer _objectPoolContainer;
+        [Inject] private SignalBus _signalBus;
         
         [SerializeField] private int initialObjectCount;
         [SerializeField] private List<PoolObject> poolItemPrefabs;
@@ -19,9 +21,20 @@ namespace ObjectPoolingSystem
         
         public override void Initialize()
         {
+            base.Initialize();
             CreatePools(initialObjectCount);
             
             IsInitialized = true;
+        }
+
+        public override void Subscribe()
+        {
+            _signalBus.Subscribe<GameStateChangedSignal>(OnGameStateChanged);
+        }
+
+        public override void Unsubscribe()
+        {
+            _signalBus.Unsubscribe<GameStateChangedSignal>(OnGameStateChanged);
         }
 
         private void CreatePools(int initialCount)
@@ -60,6 +73,14 @@ namespace ObjectPoolingSystem
             foreach (var poolObject in _objectPoolContainer.PoolObjects)
             {
                 poolObject.transform.SetParent(PooledObjectsParent);
+            }
+        }
+
+        private void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
+        {
+            if (gameStateChangedSignal.GameState is GameState.SceneIsChanged or GameState.SceneIsReloaded)
+            {
+                ResetPools();
             }
         }
     }

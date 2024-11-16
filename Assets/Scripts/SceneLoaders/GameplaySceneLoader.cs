@@ -36,6 +36,7 @@ public class GameplaySceneLoader : SceneLoader
         
         await UniTask.WaitUntil(() => _safeSpaceAdjuster.IsInitialized);
         
+        SignalBus.Fire(new SceneStateChangedSignal(SceneState.Gameplay));
         SignalBus.Fire(new GameStateChangedSignal(GameState.ManagersAreInitialized));
     }
 
