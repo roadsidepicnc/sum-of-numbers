@@ -18,9 +18,6 @@ public class MainMenuSceneController : MonoBehaviour, ISubscribable
     [Inject] private ObjectPoolManager _objectPoolManager;
     [Inject] private PopupManager _popupManager;
     
-    [Header("Panels")]
-    [SerializeField] private RectTransform topPanel;
-    
     [Header("Buttons")]
     [SerializeField] private Button playButton;
     [SerializeField] private Button settingsButton;
@@ -28,8 +25,6 @@ public class MainMenuSceneController : MonoBehaviour, ISubscribable
     
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI levelNumberText;
-    
-    [SerializeField] private GameObject content;
     
     private void OnEnable()
     {
@@ -90,7 +85,6 @@ public class MainMenuSceneController : MonoBehaviour, ISubscribable
     
     private void OnAchievementsButtonClick()
     {
-        
     }
     
     private async void OnGameStateChanged(GameStateChangedSignal gameStateChangedSignal)
