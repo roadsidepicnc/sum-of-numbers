@@ -13,7 +13,7 @@ namespace LevelManagement
     {
         [Inject] private SignalBus _signalBus;
         
-        private int LevelId => PlayerPrefs.GetInt(Constants.CurrentLevelIndex);
+        public int LevelId => PlayerPrefs.GetInt(Constants.CurrentLevelIndex);
         public int LevelNumber => LevelId + 1;
         
         private List<LevelTemplate> _levelTemplateList;
@@ -32,7 +32,7 @@ namespace LevelManagement
                 return;
             }
 
-            if (PlayerPrefs.HasKey(Constants.CurrentLevelData))
+            if (DoesSavedLevelExist)
             {
                 LoadLevelFromSave();
             }
@@ -74,6 +74,8 @@ namespace LevelManagement
 
         private void IncreaseLevelId() => PlayerPrefs.SetInt(Constants.CurrentLevelIndex, LevelNumber);
         public void DecreaseHeartAtLevelData() => _levelData.currentHeartCount--;
+        public bool DoesSavedLevelExist => PlayerPrefs.HasKey(Constants.CurrentLevelData);
+        private void DeleteSavedLevel() => PlayerPrefs.DeleteKey(Constants.CurrentLevelData);
         
         public int CurrentLevelRowCount => _levelData.rowCount;
         public int CurrentLevelColumnCount => _levelData.columnCount;
@@ -96,12 +98,19 @@ namespace LevelManagement
                     index = LevelId % _levelTemplateList.Count;
                     SetLevelDataFromTemplate(index);
                     break;
+                case GameState.SceneIsChanging:
+                    if (GameManager.SceneState == SceneState.Gameplay)
+                    {
+                        SaveLevelData();
+                    }
+                    
+                    break;
             }
         }
 
-        private void SetLevelDataFromTemplate(int index)
+        public void SetLevelDataFromTemplate(int index)
         {
-            PlayerPrefs.DeleteKey(Constants.CurrentLevelData);
+            DeleteSavedLevel();
             var levelTemplate = _levelTemplateList.Find(x => x.id == index);
             _levelData = CreateLevelDataFromTemplate(levelTemplate);
         }

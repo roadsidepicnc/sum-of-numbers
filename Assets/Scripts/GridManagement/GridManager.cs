@@ -54,8 +54,10 @@ namespace GridManagement
             var count = 0;
             foreach (var cell in GetRow(row))
             {
-                count += cell.Value;
-            }
+                if (cell.IsTarget)
+                {
+                    count += cell.Value;
+                }            }
 
             return count;
         }
@@ -65,7 +67,10 @@ namespace GridManagement
             var count = 0;
             foreach (var cell in GetColumn(column))
             {
-                count += cell.Value;
+                if (cell.IsTarget)
+                {
+                    count += cell.Value;
+                }
             }
 
             return count;
