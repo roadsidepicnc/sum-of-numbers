@@ -1,3 +1,6 @@
-![Gameplay](gameplay.png)  
-![Menu](/Users/emresezer/Projects/Unity-Projects/sum-of-numbers/main-menu.png)
-![Failed](/Users/emresezer/Projects/Unity-Projects/sum-of-numbers/failed.png)
+![Gameplay](gameplay.png)
+*Figure 1: Gameplay Screen*
+![Menu](main-menu.png)
+*Figure 1: Main Menu Screen*
+![Failed](failed.png)
+*Figure 1: Failed Popup*
