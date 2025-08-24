@@ -22,7 +22,7 @@ Features
   	•	UniTask: https://github.com/Cysharp/UniTask  
 	•	DOTween: https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676?srsltid=AfmBOoqJoZKgkXrtm3a3vj0pSnG-WOMHMKFvweY2sL2Aqsk9dpOxPANH  
 	•	Naughty Attributes: https://assetstore.unity.com/packages/tools/utilities/naughtyattributes-129996?srsltid=AfmBOopXTIp01Vum6yJiheNkn5pI6vpFVJsXCTld9RhOU-yD3NdRJ7EF  
-	•	Custom Object Pool written by me: https://github.com/roadsidepicnc/Custom-Object-Pooling-System-Using-Zenject  
+	•	Custom Object Pool written by me: https://github.com/roadsidepicnc/custom-object-pooling-system-using-zenject
 
 ![Menu](main-menu.png)
 ![Gameplay](gameplay.png)
