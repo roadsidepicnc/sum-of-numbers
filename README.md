@@ -1,6 +1,6 @@
+*Figure 1: Gameplay Screen\n*
 ![Gameplay](gameplay.png)
-*Figure 1: Gameplay Screen*
+*Figure 2: Main Menu Screen\n*
 ![Menu](main-menu.png)
-*Figure 1: Main Menu Screen*
+*Figure 3: Failed Popup\n*
 ![Failed](failed.png)
-*Figure 1: Failed Popup*
