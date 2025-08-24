@@ -15,10 +15,11 @@ Tech Details
 Features
 	•	Grid-based puzzle mechanics.
 	•	Smooth animations and transitions.
-	•	Expandable design for adding new puzzle types or variations.
+	•	Expandable design for adding new puzzle types or variations.  
+
+     
 
  
-
 ![Gameplay](gameplay.png)
 ![Menu](main-menu.png)
 ![Failed](failed.png)
